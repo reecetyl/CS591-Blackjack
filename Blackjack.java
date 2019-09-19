@@ -11,10 +11,14 @@ public class Blackjack {
 abstract class Player {
     // static variables
     // nonstatic variables
+    String name;
     // constructors
     // mutators
     // accessors
     // prints/compares/etc
+    String toString() {
+        return name;
+    }
     // static methods
 }
 
@@ -44,10 +48,21 @@ public class Dealer extends Player {
 public class Deck {
     // static variables
     // nonstatic variables
+    Card[] cards;
     // constructors
     // mutators
+    void shuffle() {
+        // code to shuffle cards
+    }
     // accessors
     // prints/compares/etc
+    String toString() {
+        String deckString = "";
+        for(Card c : cards) {
+            deckString += c.toString() + " ";
+        }
+        return deckString;
+    }
     // static methods
 }
 
@@ -55,10 +70,17 @@ public class Deck {
 public class Hand {
     // static variables
     // nonstatic variables
+    Card[] cards;
     // constructors
     // mutators
     // accessors
     // prints/compares/etc
+    String toString() {
+        String cardString = "";
+        for(Card c: cards) {
+            cardString += c.toString() + " ";
+        }
+    }
     // static methods
 }
 
@@ -66,9 +88,25 @@ public class Hand {
 public class Card {
     // static variables
     // nonstatic variables
+    String value; // A, 1-9, J, Q, K
+    String suit; // H, S, C, D for Hearts, Spades, Clubs, and Diamonds
     // constructors
+    Card(Sring value, String suit) {
+        this.value = value;
+        this.suit = suit;
+    }
     // mutators
     // accessors
+    String getSuit() {
+        return suit;
+    }
+
+    String getValue() {
+        return value;
+    }
     // prints/compares/etc
+    String toString() {
+        return value + suit; // KH for King of Hearts, 9D for 9 of Diamonds
+    }
     // static methods
 }

@@ -7,6 +7,8 @@ public class Blackjack {
 
 }
 
+
+/* Player class moved to a new file
 // abstract class for Player
 abstract class Player {
     // static variables
@@ -43,6 +45,8 @@ public class Dealer extends Player {
     // prints/compares/etc
     // static methods
 }
+*/
+
 
 // class to represent a Deck
 public class Deck {
@@ -75,7 +79,8 @@ public class Hand {
     // mutators
     // accessors
     // prints/compares/etc
-    String toString() {
+    @Override
+    public String toString() {
         String cardString = "";
         for(Card c: cards) {
             cardString += c.toString() + " ";
@@ -91,7 +96,7 @@ public class Card {
     String value; // A, 1-9, J, Q, K
     String suit; // H, S, C, D for Hearts, Spades, Clubs, and Diamonds
     // constructors
-    Card(Sring value, String suit) {
+    Card(String value, String suit) {
         this.value = value;
         this.suit = suit;
     }
@@ -105,7 +110,8 @@ public class Card {
         return value;
     }
     // prints/compares/etc
-    String toString() {
+    @Override
+    public String toString() {
         return value + suit; // KH for King of Hearts, 9D for 9 of Diamonds
     }
     // static methods

@@ -1,113 +1,95 @@
-// Blackjack.java
+import java.util.Scanner;
 
-public class Blackjack {
-    public static void main(String args[]) {
-        // main code for blackjack game
-        System.out.println("test");
-    }
+public class Blackjack {	
 
-}
 
-// abstract class for Player
-abstract class Player {
-    // static variables
-    // nonstatic variables
-    String name;
-    // constructors
-    // mutators
-    // accessors
-    // prints/compares/etc
-    String toString() {
-        return name;
-    }
-    // static methods
-}
+	public static void main(String[] args) {
+		Blackjack blackjack = new Blackjack();
+		blackjack.newGame();
+	}
 
-// HumanPlayer is a type of player
-public class HumanPlayer extends Player {
-    // static variables
-    // nonstatic variables
-    // constructors
-    // mutators
-    // accessors
-    // prints/compares/etc
-    // static methods
-}
+	Deck deck = new Deck();
+	Player dealer = new Dealer();
+	Player player;
+	Scanner userInp = new Scanner(System.in);
+	
 
-// Dealer has some of the same methods/fields as Player
-public class Dealer extends Player {
-    // static variables
-    // nonstatic variables
-    // constructors
-    // mutators
-    // accessors
-    // prints/compares/etc
-    // static methods
-}
+	Blackjack() {
+		// Initialize game.
+		System.out.println("Welcome to Tyler, Sean, and Gary's CS591 Blackjack Game!");
+		System.out.println("Please enter your name to begin: ");
+		String name = userInp.nextLine();
+		player = new Player(name);
+		// set the starting balance for player
+		System.out.println("Please enter your starting money: ");
+		int money = userInp.nextInt();
+	}
 
-// class to represent a Deck
-public class Deck {
-    // static variables
-    // nonstatic variables
-    Card[] cards;
-    // constructors
-    // mutators
-    void shuffle() {
-        // code to shuffle cards
-    }
-    // accessors
-    // prints/compares/etc
-    String toString() {
-        String deckString = "";
-        for(Card c : cards) {
-            deckString += c.toString() + " ";
-        }
-        return deckString;
-    }
-    // static methods
-}
+	public void newGame() {
+		System.out.println("------- Starting new round! -------");
+		setBets();
+		getFirstHands();
+		showHands();
+		//if it is able to split
 
-// class to represent a Hand of Cards
-public class Hand {
-    // static variables
-    // nonstatic variables
-    Card[] cards;
-    // constructors
-    // mutators
-    // accessors
-    // prints/compares/etc
-    String toString() {
-        String cardString = "";
-        for(Card c: cards) {
-            cardString += c.toString() + " ";
-        }
-    }
-    // static methods
-}
+		while(!gameOver()) {
+			//player decides to play which move (split, double, hit, stand )
 
-// class to represent a Card
-public class Card {
-    // static variables
-    // nonstatic variables
-    String value; // A, 1-9, J, Q, K
-    String suit; // H, S, C, D for Hearts, Spades, Clubs, and Diamonds
-    // constructors
-    Card(Sring value, String suit) {
-        this.value = value;
-        this.suit = suit;
-    }
-    // mutators
-    // accessors
-    String getSuit() {
-        return suit;
-    }
+			/*
+			if(player stand) break;
+			*/
+		}
+		// Dealer's turn
+		
+	}
 
-    String getValue() {
-        return value;
-    }
-    // prints/compares/etc
-    String toString() {
-        return value + suit; // KH for King of Hearts, 9D for 9 of Diamonds
-    }
-    // static methods
+	public void setBets() {
+		System.out.println("Please enter your bet: ");
+		int bet = userInp.nextInt();
+		//check if bet <= player.balence
+	}
+
+	public void getFirstHands() {
+		// distribute cards
+		giveCard(player, deck.removeCard());
+		giveCard(dealer, deck.removeCard());
+		giveCard(player, deck.removeCard());
+		// hide the dealer's second card
+		Card hiddenDealerCard = deck.removeCard();
+	}
+
+	public void split(Hand h){
+
+	}
+
+	public void doubleDown(Hand h){
+
+	}
+
+	public void hit(Hand h){
+
+	}
+
+	public void giveCard(Player p, Card c) {
+
+	}
+
+	//format outline the current state after every move
+	public void showHands() {
+		//show hands and current scores
+	}
+
+	public boolean gameOver() {
+		if (player.totalPoints() >= 21 || dealer.totalPoints() >= 21) return true;
+		else return false;
+	}
+
+	public void showWinner() {
+		if(player.totalPoints() >= 21) System.out.println(player.getName() + " has lost");
+		else if (dealer.totalPoints() >= 21) System.out.println(dealer.getName() + " has lost");
+		else {
+			Player winner = (player.totalPoints() > dealer.totalPoints()) ? player : dealer;
+			System.out.println(winner.getName() + " wins");
+		}
+	}
 }

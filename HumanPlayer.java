@@ -1,9 +1,11 @@
+import java.util.Scanner;
 
 // HumanPlayer is a type of player
 public class HumanPlayer extends Player {
 
     // static variables
     // nonstatic variables
+    Scanner scan = new Scanner(System.in);
     //private int balance;
     private int bankroll;
     // constructors
@@ -30,8 +32,22 @@ public class HumanPlayer extends Player {
         setBalance(getBalance()-amount);
     }
 
-    public int countHand() {
-        return 0;
+
+
+    @Override
+    public boolean action() {
+        //printHand() method to be implemented
+        myHand.printHand();
+        //check for blackjack
+        if(myHand.countHand() != 21) {
+            System.out.println("Hit(H) or Stay(S)");
+            //scan.nextLine();
+            return true;
+        } else {
+            System.out.println("You got a BlackJack! Congrats");
+            return false;
+        }
+
     }
 
     @Override
@@ -82,6 +98,8 @@ public class HumanPlayer extends Player {
     public void cashout(){
 
     }
+
+
     // static methods
 }
 

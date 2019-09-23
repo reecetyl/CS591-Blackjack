@@ -3,7 +3,7 @@ abstract class Player {
     // nonstatic variables
     private String name;
     private int balance;
-
+    protected Hand myHand;
     // constructors
     public Player(String name, int balance){
         setName(name);
@@ -13,6 +13,7 @@ abstract class Player {
     public Player(){
         setName("John Doe");
         setBalance(0);
+        myHand = new Hand();
     }
 
     // mutators
@@ -44,7 +45,8 @@ abstract class Player {
     public abstract void hit();
     // static methods
 
-    public abstract int countHand();
+
+    public abstract boolean action();
 
 }
 

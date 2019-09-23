@@ -86,6 +86,12 @@ public class Hand {
             cardString += c.toString() + " ";
         }
     }
+
+    public void printHand() {
+    }
+
+    public int countHand() {
+    }
     // static methods
 }
 

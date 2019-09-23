@@ -44,19 +44,51 @@ public class Dealer extends Player {
     // static methods
 }
 
+        public void createDeck() {
+            // create a deck by inserting one card of each Point for each Suit
+            for (Suit s: Suit.values()) {
+                for (Point p: Point.values()) {
+                    cards.add(new Card(s, p));
+                }
+            }
+        }
+        
 // class to represent a Deck
 public class Deck {
     // static variables
     // nonstatic variables
-    Card[] cards;
+    Queue<Card> cards = new ArrayList<>();
     // constructors
+    public Deck() {
+        initDeck();
+        shuffle();
+    }
     // mutators
-    void shuffle() {
+    public void initDeck() {
+    /*    
+        for () {
+            for () {
+                cards.add(new Card());
+            }
+        }
+    */
+    }
+
+    public void shuffle() {
         // code to shuffle cards
+        Collections.shuffle(cards);
+        System.out.println("Deck has been shuffled.");
+    }
+
+    public Card removeCard(){
+        if (cards.size() == 0) 
+            throw new RuntimeException("No more cards");
+        Card tmpCard = cards.poll();
+        return tempCard;
     }
     // accessors
     // prints/compares/etc
-    String toString() {
+    public String toString() {
         String deckString = "";
         for(Card c : cards) {
             deckString += c.toString() + " ";

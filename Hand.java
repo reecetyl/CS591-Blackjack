@@ -24,6 +24,10 @@ public class Hand {
 	return cards;
     }
 
+    public Integer getNumCards() {
+	return cards.size() + splitCards.size();
+    }
+
     public Integer getScore() {
 	Integer handScore = 0;
 	for(Card c : cards) {

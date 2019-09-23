@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Blackjack",
+            "request": "launch",
+            "mainClass": "Blackjack",
+            "projectName": "CS591-Blackjack_47d826a"
+        }
+    ]
+}

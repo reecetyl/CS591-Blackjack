@@ -4,16 +4,23 @@ public class Hand {
     List<Card> cards = new ArrayList<>();
     List<Card> splitCards = new ArrayList<>(); //if the case of splitting
     
+    Hand() {
+        this.cards = new ArrayList<Card>(10);
+        this.splitCards = new ArrayList<>(10);
+        this.cards.clear();
+        this.splitCards.clear();
+    }
+
     public void add(Card card) {
-	cards.add(card);
+	    cards.add(card);
     }
 
     public void add(List<Card> cards) {
-	this.cards.addAll(cards);
+	    this.cards.addAll(cards);
     }
 
     public void clear() {
-	cards.clear();
+	    cards.clear();
     }
  
     public boolean isSplitable() {

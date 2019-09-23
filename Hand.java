@@ -2,6 +2,7 @@ import java.util.*;
 
 public class Hand {
     List<Card> cards = new ArrayList<>();
+    List<Card> cards2 = new ArrayList<>(); //if the case of splitting
     
     public void add(Card card) {
 	cards.add(card);
@@ -15,6 +16,10 @@ public class Hand {
 	cards.clear();
     }
  
+    public boolean isSplitable() {
+        return false;
+    }
+
     public List<Card> getCards() {
 	return cards;
     }

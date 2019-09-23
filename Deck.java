@@ -2,15 +2,38 @@
 public class Deck {
     // static variables
     // nonstatic variables
-    Card[] cards;
+    private Queue<Card> cards = new ArrayList<>();
     // constructors
+    public Deck() {
+        initDeck();
+        shuffle();
+    }
     // mutators
-    void shuffle() {
+    public void initDeck() {
+        String[] suits = {"H", "S", "C", "D"}; //H, S, C, D for Hearts, Spades, Clubs, and Diamonds
+        String[] values = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "J", "Q", "K"};    
+        for (String s : suits) {
+            for (String v : values) {
+                cards.add(new Card(v, s));
+            }
+        }
+    }
+
+    public void shuffle() {
         // code to shuffle cards
+        Collections.shuffle(cards);
+        System.out.println("Deck has been shuffled.");
+    }
+
+    public Card removeCard(){
+        if (cards.size() == 0) 
+            throw new RuntimeException("No more cards");
+        Card tmpCard = cards.poll();
+        return tmpCard;
     }
     // accessors
     // prints/compares/etc
-    String toString() {
+    public String toString() {
         String deckString = "";
         for(Card c : cards) {
             deckString += c.toString() + " ";

@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Hand {
     List<Card> cards = new ArrayList<>();
-    List<Card> cards2 = new ArrayList<>(); //if the case of splitting
+    List<Card> splitCards = new ArrayList<>(); //if the case of splitting
     
     public void add(Card card) {
 	cards.add(card);
@@ -33,7 +33,7 @@ public class Hand {
     }
     
     public String toString() {
-        String cardString = "";
+        String cardString = "HAND: ";
         for(Card c: cards) {
             cardString += c.toString() + " ";
         }

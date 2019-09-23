@@ -2,12 +2,12 @@
 abstract class Player {
     // static variables
     // nonstatic variables
-    String name;
+    private String name;
     // constructors
     // mutators
     // accessors
     // prints/compares/etc
-    String toString() {
+    public String toString() {
         return name;
     }
     // static methods

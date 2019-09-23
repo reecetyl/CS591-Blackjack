@@ -1,8 +1,13 @@
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Collections;
+import java.util.Queue;
+
 // class to represent a Deck
 public class Deck {
     // static variables
     // nonstatic variables
-    private Queue<Card> cards = new ArrayList<>();
+    private Queue<Card> cards = new LinkedList<>();
     // constructors
     public Deck() {
         initDeck();
@@ -21,7 +26,7 @@ public class Deck {
 
     public void shuffle() {
         // code to shuffle cards
-        Collections.shuffle(cards);
+        Collections.shuffle((List<?>) cards);
         System.out.println("Deck has been shuffled.");
     }
 

@@ -1,6 +1,6 @@
 public class Move {
-	Player player;
-	Card card;
+	private Player player;
+	private Card card;
 	
 	public Move(Player p, Card c) {
 		this.player = p;
@@ -14,9 +14,9 @@ public class Move {
 	public Card getCard() {
 		return this.card;
 	}
-
+    /*
 	public String toString() {
 		return "Move: " + player.getName() + " " + " takes Card " + card.toString() + " for " + String(card.getScore()) + " points";
 	}
-
+	*/
 }

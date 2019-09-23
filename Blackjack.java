@@ -13,7 +13,7 @@ public class Blackjack {
 
 	Blackjack() {
 		// Initialize game.
-		System.out.println("Welcome to Tyler, Sean, and Gary's CS591 Blackjack Game!")
+		System.out.println("Welcome to Tyler, Sean, and Gary's CS591 Blackjack Game!");
 		System.out.println("Please enter your name to begin: ");
 		String name = userInp.nextLine();
 		player = new Player(name);

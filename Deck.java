@@ -1,16 +1,15 @@
 import java.util.*;
 public class Deck {
 
-    private Queue<Card> cards = new LinkedList<>();
+    private List<Card> cards = new LinkedList<>();
+    private int headPoint; // the index of the top card in the deck
     public Deck() {
         initDeck();
-        shuffle();
     }
 
     public void initDeck() {
         String[] suits = {"H", "S", "C", "D"}; //H, S, C, D for Hearts, Spades, Clubs, and Diamonds
-        //String[] values = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "J", "Q", "K"};   
-        String[] values = {"A", "J"}; 
+        String[] values = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "J", "Q", "K"};   
         for (String s : suits) {
             for (String v : values) {
                 cards.add(new Card(v, s));
@@ -19,14 +18,15 @@ public class Deck {
     }
 
     public void shuffle() {
-        Collections.shuffle((List<?>) cards);
-        System.out.println("Deck has been shuffled.");
+        Collections.shuffle(cards);
+        headPoint = 0;
     }
 
     public Card dealCard(){
-        if (cards.size() == 0) 
+        if (this.headPoint > cards.size()-1) 
             throw new RuntimeException("No more cards");
-        Card tmpCard = cards.poll();
+        Card tmpCard = cards.get(headPoint);
+        headPoint++;
         return tmpCard;
     }
 

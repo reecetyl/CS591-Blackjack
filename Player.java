@@ -3,24 +3,14 @@ abstract class Player {
     // nonstatic variables
     private String name;
     private int balance;
-    protected Hand myHand;
+    protected Hand hand;
     // constructors
+    
     public Player(String name, int balance){
-        setName(name);
-        setBalance(balance);
-    }
-    //no-arg constructor
-    public Player(){
-        setName("John Doe");
-        setBalance(0);
-        myHand = new Hand();
-    }
-
-    // mutators
-
-    public void setName(String name) {
         this.name = name;
-    }
+        setBalance(balance);
+        this.hand = new Hand();
+    }   
 
     public void setBalance(int balance) {
         //balance cannot be below 0
@@ -29,24 +19,17 @@ abstract class Player {
         }
     }
 
-    // accessors
-    public String getName() {
-        return name;
-    }
-
     public int getBalance() {
         return balance;
     }
+    
+    public Hand getHand() {
+        return hand;
+    }
+    
     // prints/compares/etc
     public String toString() {
         return name;
     }
 
-    public abstract void hit();
-    // static methods
-
-
-    public abstract boolean action();
-
 }
-

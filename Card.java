@@ -9,6 +9,7 @@ public class Card {
         this.suit = suit;
 	try {
 		Integer score = Integer.parseInt(value);
+		this.score = score;
 	} catch (NumberFormatException | NullPointerException nfe) {
 		if(value.equals("A")) this.score = 1;
 		else {
@@ -27,7 +28,7 @@ public class Card {
     }
 	
     public Integer getScore() {
-	return score;
+	    return score;
     }
 
     public boolean isSameValue(Card other) {

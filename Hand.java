@@ -1,18 +1,15 @@
 import java.util.*;
-
 public class Hand {
     List<Card> cards = new ArrayList<>();
-    List<Card> splitCards = new ArrayList<>(); //if the case of splitting
+    Integer score = 0;
     
     Hand() {
-        this.cards = new ArrayList<Card>(10);
-        this.splitCards = new ArrayList<>(10);
-        this.cards.clear();
-        this.splitCards.clear();
+        cards.clear();
     }
 
     public void add(Card card) {
 	    cards.add(card);
+	    score += card.getScore();
     }
 
     public void add(List<Card> cards) {
@@ -22,25 +19,21 @@ public class Hand {
     public void clear() {
 	    cards.clear();
     }
- 
-    public boolean isSplitable() {
-        return false;
-    }
 
     public List<Card> getCards() {
-	return cards;
+	    return cards;
+    }
+    
+    public Card getFirstCard() {
+        return cards.get(0);
     }
 
     public Integer getNumCards() {
-	return cards.size() + splitCards.size();
+	    return cards.size();
     }
 
     public Integer getScore() {
-	Integer handScore = 0;
-	for(Card c : cards) {
-		handScore += c.getScore();
-	}
-	return handScore;
+	    return this.score;
     }
     
     public String toString() {
@@ -48,6 +41,7 @@ public class Hand {
         for(Card c: cards) {
             cardString += c.toString() + " ";
         }
-	return cardString;
+        cardString += "(" + this.getScore() + ")";
+	    return cardString;
     }
 }

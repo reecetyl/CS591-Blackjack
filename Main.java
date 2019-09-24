@@ -4,7 +4,14 @@ public class Main
 	    Blackjack game = new Blackjack();
 		game.welcome();
 		game.initPlayer();
-		game.turn();
-		
+		Scanner userInput = new Scanner(System.in);
+		while(true){
+			game.turn();
+			System.out.println("Do you wanna play another round? If so, enter Y/y.");
+	        String doplay = userInput.nextLine();
+	        char m=doplay.charAt(0);
+		    if(m!='Y'&&m!='y')
+		        break;
+		}
 	}
 }

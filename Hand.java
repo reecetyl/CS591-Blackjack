@@ -9,7 +9,11 @@ public class Hand {
 
     public void add(Card card) {
 	    cards.add(card);
-	    score += card.getScore();
+	    if(card.getValue().equals("A")) {
+	    	int tmpScore=this.getScore()<=10?11:1;
+	    	score += tmpScore;
+	    }else
+	    	score += card.getScore();
     }
 
     public void add(List<Card> cards) {
@@ -18,6 +22,7 @@ public class Hand {
 
     public void clear() {
 	    cards.clear();
+	    score = 0;
     }
 
     public List<Card> getCards() {

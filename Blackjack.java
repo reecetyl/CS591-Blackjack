@@ -6,7 +6,6 @@ public class Blackjack {
     Dealer dealer;
     
     Blackjack() {
-        deck = new Deck();
         dealer = new Dealer("Dealer", deck);    
     }
     
@@ -24,11 +23,23 @@ public class Blackjack {
     }
     
     public void turn() {
+        deck = new Deck();
         System.out.println("Starting turn...");
+        System.out.println("Please enter your bets: ");
+        int bets;
+        do {
+        	Scanner usrinp = new Scanner(System.in);
+        	bets = usrinp.nextInt();
+            boolean flag=checkBets(bets);
+            if(flag) break;
+            System.out.println("You dont have that much money. You have "+player.getBalance());
+        }while(true);
+        player.growBalance((-1)*bets);
+        Scanner userInput = new Scanner(System.in);
         this.initDeal();
         this.showHandsHidden();
         while(!isBust(player)) {
-            Scanner userInput = new Scanner(System.in);
+            Scanner usrinp = new Scanner(System.in);
             System.out.println("What would you like to do? (h = hit, s = stand, sp = split, d = double up)");
             String choice = userInput.nextLine();
             if(choice.equalsIgnoreCase("h")) {
@@ -42,11 +53,20 @@ public class Blackjack {
                 break;
             }
             else { // double up
-                break;
+            	if(checkBets(bets)) {
+            		hit(player);
+                	player.growBalance((-1)*bets);
+                	bets*=2;
+                    break;
+            	}else {
+            		System.out.println("You dont have that much money to do double down");
+            		continue;
+            	}
+            	
             }
             this.showHandsHidden();
         }
-        while(dealer.getHand().score <= 17) {
+        while(dealer.getHand().score < 17 && !isBust(player)) {
             hit(dealer);
             this.showHands();
         }
@@ -54,12 +74,19 @@ public class Blackjack {
         System.out.println("game over");
         showHands();
         if(isBust(player)) System.out.println("Dealer wins!");
-        if(isBust(dealer)) System.out.println("Player wins!");
+        else if(isBust(dealer)) {
+        	System.out.println("Player wins!");
+        	player.growBalance(bets*2);
+        }
         else {
-            if(player.getHand().getScore() > dealer.getHand().getScore()) System.out.println("Player wins!");
+            if(player.getHand().getScore() > dealer.getHand().getScore()) {
+            	System.out.println("Player wins!");
+            	player.growBalance(bets*2);
+            }
             else System.out.println("Dealer wins!");
         } // if dealer & player bust what happens?
-        
+        System.out.println("Player balance "+ player.getBalance());
+        clearHand();
         // pay out money 
     }
     
@@ -84,11 +111,18 @@ public class Blackjack {
         System.out.println(player.getHand());
     }
     
+    public boolean checkBets(int b) {
+    	return player.getBalance()>=b?true:false;
+    }
+  
     public boolean isBust(Player p) {
-        if(p.getHand().getScore() > 21) return true;
+        if (p.getHand().getScore() > 21) return true;
         else return false;
     }
-    
+    public void clearHand() {
+    	player.getHand().clear();
+    	dealer.getHand().clear();
+    }
     public void hit(Player p) {
         p.getHand().add(deck.dealCard());
     }

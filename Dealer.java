@@ -9,6 +9,10 @@ public class Dealer extends Player {
         this.hand = new Hand();
     }
 
-    
-    
+    public Hand getHand() {
+        return hand;
+    }
+
+
+
 }

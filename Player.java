@@ -1,15 +1,16 @@
+import java.util.ArrayList;
+
 abstract class Player {
     // static variables
     // nonstatic variables
     private String name;
     private int balance;
-    protected Hand hand;
+
     // constructors
     
     public Player(String name, int balance){
-        this.name = name;
+        setName(name);
         setBalance(balance);
-        this.hand = new Hand();
     }   
 
     public void setBalance(int balance) {
@@ -22,11 +23,16 @@ abstract class Player {
     public int getBalance() {
         return balance;
     }
-    
-    public Hand getHand() {
-        return hand;
+
+
+    public String getName() {
+        return name;
     }
-    
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     // prints/compares/etc
     public String toString() {
         return name;

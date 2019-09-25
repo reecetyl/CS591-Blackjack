@@ -1,5 +1,5 @@
 import java.util.*;
-public class Hand {
+public class Hand implements Splittable {
     List<Card> cards = new ArrayList<>();
     Integer score = 0;
     
@@ -33,6 +33,10 @@ public class Hand {
         return cards.get(0);
     }
 
+    public Card getSecondCard() {
+        return cards.get(1);
+    }
+
     public Integer getNumCards() {
 	    return cards.size();
     }
@@ -48,5 +52,20 @@ public class Hand {
         }
         cardString += "(" + this.getScore() + ")";
 	    return cardString;
+    }
+
+    @Override
+    public boolean canSplit() {
+        if(this.cards.size() == 2 && getFirstCard().isSameValue(getSecondCard())) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isNaturalBlackJack() {
+        if(this.cards.size() == 2 && getScore().intValue() == 21) {
+            return true;
+        }
+        return false;
     }
 }

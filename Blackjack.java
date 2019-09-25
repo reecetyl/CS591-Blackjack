@@ -11,7 +11,16 @@ public class Blackjack {
         userInput = new Scanner(System.in);  
         deck = new Deck();
     }
-    
+
+    public Deck getDeck() {
+        return deck;
+    }
+
+    public void setDeck(Deck deck) {
+        this.deck = deck;
+    }
+
+
     public void welcome() {
     	System.out.println("————————————————————————————————————————————————————————");
         System.out.println("Welcome to Tyler, Sean, and Gary's CS591 Blackjack game!");
@@ -23,18 +32,21 @@ public class Blackjack {
         String playerName = userInput.nextLine();
         System.out.println("Please enter the amount of your starting money: ");
         Integer startingMoney = userInput.nextInt();
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        //checking for invalid input. say starting money = 0 or negative
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         player = new HumanPlayer(playerName, startingMoney);
     }
     
     public void turn() {
         System.out.println("------Starting new turn------");
-        deck.shuffle();
+        //deck.shuffle();
         System.out.println("Please enter your bets: ");
         do {
         	bets = userInput.nextInt();
             boolean flag=checkBets(bets);
             if(flag) break;
-            System.out.println("You don't have that much money. You have "+player.getBalance());
+            System.out.println("Please bet more than 0 dollars and less than your balance "+player.getBalance());
         }while(true);
 
         userInput.nextLine();
@@ -175,7 +187,7 @@ public class Blackjack {
     }
     
     public boolean checkBets(int b) {
-    	return player.getBalance()>=b?true:false;
+    	return (player.getBalance()>=b && b>0) ? true : false;
     }
   
     public boolean isBust(HumanPlayer p) {

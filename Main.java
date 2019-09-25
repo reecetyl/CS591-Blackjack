@@ -9,11 +9,19 @@ public class Main
 		Scanner userInput = new Scanner(System.in);
 		while(true){
 			game.turn();
+			if(game.player.getBalance() == 0) {
+				System.out.println("Thank you for playing and losing all your money! See you next time!");
+				break;
+			}
+			//check how many cards are left in the deck and shuffle the deck when needed.
+			if(game.getDeck().getLeftCards() < 20) game.getDeck().shuffle();
 			System.out.println("Do you wanna play another round? If so, enter Y/y.");
 	        String doplay = userInput.nextLine();
 	        char m=doplay.charAt(0);
-		    if(m!='Y'&&m!='y')
+		    if(m!='Y'&&m!='y'){
+		    	System.out.println("Thank you for playing BlackJack! Your final balance is " + game.player.getBalance());
 		        break;
+		    }
 		}
 	}
 }

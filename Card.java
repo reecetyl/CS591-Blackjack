@@ -1,6 +1,6 @@
 // class to represent a Card
 public class Card {
-    String value; // A, 2-9, J, Q, K
+    String value; // A, 2-10, J, Q, K
     Integer score; // Number it counts for in Blackjack
     String suit; // H, S, C, D for Hearts, Spades, Clubs, and Diamonds
     

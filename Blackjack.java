@@ -72,7 +72,7 @@ public class Blackjack {
             if(player.getHands().get(0).canSplit()) {
                 Card aCard = player.getHands().get(0).getFirstCard();
                 System.out.println("you got a pair of " +
-                        aCard.toString() + " ! Do you want to split them?");
+                        aCard.toString() + " ! Do you want to split them? (y/s for yes/split, n for no");
                 String input = userInput.nextLine();
                 if(input.equalsIgnoreCase("y") || input.equalsIgnoreCase("s")) {
                     //split here
@@ -81,12 +81,25 @@ public class Blackjack {
                 }
             }
 
+            //double up is available only in the first round
+            if(player.getHands().get(0).getCards().size() == 2) {
+                System.out.println("Do you want to double up? (y/d for yes/double, n for no");
+                String input = userInput.nextLine();
+                if(input.equalsIgnoreCase("y") || input.equalsIgnoreCase("d")) {
+                    if (checkBets(bets)) {
+                        hit(player);
+                        player.growBalance((-1) * bets);
+                        bets *= 2;
+                        break;
+                    } else {
+                        System.out.println("You don't have that much money to do double down");
+                    }
+                }
+            }
 
-            //
 
 
-
-            System.out.println("What would you like to do? (h = hit, s = stand, d = double up)");
+            System.out.println("What would you like to do? (h = hit, s = stand)");
             String choice = userInput.nextLine();
             if(choice.equalsIgnoreCase("h")) {
                 hit(player);

@@ -1,12 +1,18 @@
 import java.util.*;
 public class Hand implements Splittable {
     List<Card> cards = new ArrayList<>();
+    Integer bet = 0;
     Integer score = 0;
     
     Hand() {
         cards.clear();
     }
-
+    
+    Hand(Card c, Integer bet){
+    	this.add(c);
+    	this.bet = bet;
+    }
+    
     public void add(Card card) {
         cards.add(card);
         if(card.getValue().equals("A")) {
@@ -23,6 +29,14 @@ public class Hand implements Splittable {
     public void clear() {
         cards.clear();
         score = 0;
+    }
+    
+    public void setBet(Integer b) {
+    	this.bet=b;
+    }
+    
+    public Integer getBet() {
+    	return bet;
     }
 
     public List<Card> getCards() {
@@ -46,14 +60,18 @@ public class Hand implements Splittable {
     }
     
     public String toString() {
-        String cardString = "HAND: ";
+        String cardString = "";
         for(Card c: cards) {
             cardString += c.toString() + " ";
         }
         cardString += "(" + this.getScore() + ")";
         return cardString;
     }
-
+    
+    public void removeCard() {
+    	this.getCards().remove(0);
+    }
+    
     @Override
     public boolean canSplit() {
         if(this.getCards().size() == 2 && getFirstCard().isSameValue(getSecondCard())) {
@@ -61,7 +79,12 @@ public class Hand implements Splittable {
         }
         return false;
     }
-
+    
+    public boolean isBust() {
+        if (this.getScore() > 21) return true;
+        else return false;
+    }
+    
     public boolean isNaturalBlackJack() {
         if(this.cards.size() == 2 && getScore().intValue() == 21) {
             return true;

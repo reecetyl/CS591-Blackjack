@@ -8,7 +8,7 @@ public class Main
 		game.initPlayer();
 		Scanner userInput = new Scanner(System.in);
 		while(true){
-			game.turn();
+			game.gameRound();			
 			if(game.getPlayer().outOfMoney()) {
 				game.handleOutOfMoney();
 				break;

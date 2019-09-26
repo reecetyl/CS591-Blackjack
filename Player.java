@@ -5,27 +5,23 @@ abstract class Player {
     // nonstatic variables
     private String name;
     private int balance;
-
-    // constructors
     
-    public Player(String name, int balance){
+    // constructors
+    public Player(String name, int money){
         setName(name);
-        setBalance(balance);
+        setBalance(money);
     }   
-
+    
+    public int getBalance() {
+        return balance;
+    }
+    
     public void setBalance(int balance) {
         //balance cannot be below 0
         if(!(balance < 0)){
             this.balance = balance;
         }
     }
-
-    public int getBalance() {
-        return balance;
-    }
-    
-    public abstract boolean isBust();
-
     public String getName() {
         return name;
     }

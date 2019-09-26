@@ -10,9 +10,9 @@ public class Deck {
     }
 
     public void initDeck() {
-        String[] suits = {"H", "S", "C", "D"}; //H, S, C, D for Hearts, Spades, Clubs, and Diamonds
-        String[] values = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
-
+        String[] suits = {"H", "S", "C", "D","Q","w","e","R","t","O","A"}; //H, S, C, D for Hearts, Spades, Clubs, and Diamonds
+        //String[] values = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+        String[] values = {"A","A","A"};
 
         for (String s : suits) {
             for (String v : values) {

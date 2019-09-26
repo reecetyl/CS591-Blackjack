@@ -11,10 +11,20 @@ public class HumanPlayer extends Player {
     public ArrayList<Hand> getHands() {
         return hands;
     }
+    
+    public boolean isBust() {
+        for(Hand h: this.getHands()) {
+            if (h.getScore() > 21) return true;
+        }
+        return false;
+    }
 
     public void growBalance(int balance) {
-    	this.setBalance(this.getBalance()+balance);
-    	
+        this.setBalance(this.getBalance()+balance);
+    }
+    
+    public boolean outOfMoney() {
+        return this.getBalance() == 0;
     }
 
 }

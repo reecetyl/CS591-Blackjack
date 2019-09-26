@@ -8,25 +8,25 @@ public class Hand implements Splittable {
     }
 
     public void add(Card card) {
-	    cards.add(card);
-	    if(card.getValue().equals("A")) {
-	    	int tmpScore=this.getScore()<=10?11:1;
-	    	score += tmpScore;
-	    }else
-	    	score += card.getScore();
+        cards.add(card);
+        if(card.getValue().equals("A")) {
+            int tmpScore=this.getScore()<=10?11:1;
+            score += tmpScore;
+        }else
+            score += card.getScore();
     }
 
     public void add(List<Card> cards) {
-	    this.cards.addAll(cards);
+        this.cards.addAll(cards);
     }
 
     public void clear() {
-	    cards.clear();
-	    score = 0;
+        cards.clear();
+        score = 0;
     }
 
     public List<Card> getCards() {
-	    return cards;
+        return cards;
     }
     
     public Card getFirstCard() {
@@ -38,11 +38,11 @@ public class Hand implements Splittable {
     }
 
     public Integer getNumCards() {
-	    return cards.size();
+        return cards.size();
     }
 
     public Integer getScore() {
-	    return this.score;
+        return this.score;
     }
     
     public String toString() {
@@ -51,12 +51,12 @@ public class Hand implements Splittable {
             cardString += c.toString() + " ";
         }
         cardString += "(" + this.getScore() + ")";
-	    return cardString;
+        return cardString;
     }
 
     @Override
     public boolean canSplit() {
-        if(this.cards.size() == 2 && getFirstCard().isSameValue(getSecondCard())) {
+        if(this.getCards().size() == 2 && getFirstCard().isSameValue(getSecondCard())) {
             return true;
         }
         return false;

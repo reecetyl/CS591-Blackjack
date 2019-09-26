@@ -9,8 +9,8 @@ public class Main
 		Scanner userInput = new Scanner(System.in);
 		while(true){
 			game.turn();
-			if(game.player.getBalance() == 0) {
-				System.out.println("Thank you for playing and losing all your money! See you next time!");
+			if(game.getPlayer().outOfMoney()) {
+				game.handleOutOfMoney();
 				break;
 			}
 			//check how many cards are left in the deck and shuffle the deck when needed.

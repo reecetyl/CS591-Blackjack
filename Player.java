@@ -23,7 +23,8 @@ abstract class Player {
     public int getBalance() {
         return balance;
     }
-
+    
+    public abstract boolean isBust();
 
     public String getName() {
         return name;
@@ -32,6 +33,8 @@ abstract class Player {
     public void setName(String name) {
         this.name = name;
     }
+    
+    public abstract boolean outOfMoney();
 
     // prints/compares/etc
     public String toString() {

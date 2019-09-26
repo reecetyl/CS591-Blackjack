@@ -4,19 +4,19 @@ public class Card {
     Integer score; // Number it counts for in Blackjack
     String suit; // H, S, C, D for Hearts, Spades, Clubs, and Diamonds
     
-    Card(String value, String suit) {	
+    Card(String value, String suit) {   
         this.value = value;
         this.suit = suit;
-	try {
-		Integer score = Integer.parseInt(value);
-		this.score = score;
-	} catch (NumberFormatException | NullPointerException nfe) {
-		if(value.equals("A")) this.score = 1;
-		else {
-			this.score = 10;			
-		}
-	} 
-	this.score = score;
+    try {
+        Integer score = Integer.parseInt(value);
+        this.score = score;
+    } catch (NumberFormatException | NullPointerException nfe) {
+        if(value.equals("A")) this.score = 1;
+        else {
+            this.score = 10;            
+        }
+    } 
+    this.score = score;
     }
     
     public String getSuit() {
@@ -26,13 +26,13 @@ public class Card {
     public String getValue() {
         return value;
     }
-	
+    
     public Integer getScore() {
-	    return score;
+        return score;
     }
 
     public boolean isSameValue(Card other) {
-	return this.score == other.score;
+    return this.score == other.score;
     }
 
     public String toString() {

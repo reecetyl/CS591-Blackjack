@@ -12,6 +12,15 @@ public class Dealer extends Player {
     public Hand getHand() {
         return hand;
     }
+    
+    public boolean outOfMoney() {
+        return false;
+    }
+    
+    public boolean isBust() {
+        if (this.getHand().getScore() > 21) return true;
+        else return false;
+    }
 
 
 

@@ -6,33 +6,35 @@ public class Blackjack {
     Dealer dealer;
     
     Blackjack() {
-        dealer = new Dealer("Dealer", deck);  
-        userInput = new Scanner(System.in);  
         deck = new Deck();
+        dealer = new Dealer("Dealer", deck);
+        userInput = new Scanner(System.in);
     }
 
     public Deck getDeck() {
         return deck;
-    }
-    
-    public Player getPlayer() {
-        return player;
     }
 
     public void setDeck(Deck deck) {
         this.deck = deck;
     }
 
+    public Player getPlayer() {
+        return player;
+    }
+
+
+
     public void welcome() {
         System.out.println("————————————————————————————————————————————————————————");
         System.out.println("Welcome to Tyler, Sean, and Gary's CS591 Blackjack game!");
         System.out.println("————————————————————————————————————————————————————————\n");
     }
-    
+
     public void handleOutOfMoney() {
         System.out.println("Thank you for playing and losing all your money! See you next time!");
     }
-    
+
     public void initPlayer() {
         System.out.println("Please enter player's name: ");
         String playerName = userInput.nextLine();
@@ -43,16 +45,19 @@ public class Blackjack {
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         player = new HumanPlayer(playerName, startingMoney);
     }
-    
-    
+
+
     public void gameRound() {
         System.out.println("\n------Starting new turn------");
         deck.shuffle();
         initDeal();
         putDownBet();
         showHandsHidden();
-        playerTurn(player.getHands().get(0),false);
-        dealerTurn(dealer.getHand());
+        boolean ended = playerTurn(player.getHands().get(0),false);
+        if(ended == false) {
+            dealerTurn(dealer.getHand());
+        }
+
         // determine winner
         System.out.println("****** You have finished this round! ******");
         for(int i=0;i<player.getHands().size();i++) {
@@ -62,15 +67,15 @@ public class Blackjack {
         }
         clearHands();
         player.playNewHand();
-        // pay out money 
+        // pay out money
     }
-    
+
     public void putDownBet() {
     	System.out.println("Please put down your bet: ");
     	int bets;
         do {
             bets = userInput.nextInt();
-            if(player.checkBalance(bets)) 
+            if(player.checkBalance(bets))
             	break;
             System.out.println("Please bet more than 0 dollars and less than your balance "+player.getBalance());
         }while(true);
@@ -78,9 +83,9 @@ public class Blackjack {
         player.growBalance((-1)*player.getHands().get(0).getBet());
         userInput.nextLine();
     }
-    
-    public void playerTurn(Hand h, boolean isSplitted) {
-        while(!h.isBust()) {
+
+    public boolean playerTurn(Hand h, boolean isSplitted) {
+        while(!h.isBust() && !h.isNaturalBlackJack()) {
             //check for split-able
             if(h.canSplit()&&player.checkBalance(h.getBet())&&!isSplitted) { //only allow to split when have two identical cards            	isSplitted =true;							    // and enough money, and only allow to split once
             	Card aCard = h.getFirstCard();					// and enough money, and only allow to split once
@@ -126,13 +131,24 @@ public class Blackjack {
             }
             this.showHandsHidden();
         }
+
+        if(h.isNaturalBlackJack() || h.isBust()) {
+            return true;
+        }
+        this.showHands();
+        return false;
+
     }
-        
+
     public void dealerTurn(Hand h) {
-        while(h.getScore() < 17 && !h.isBust()) {
+        while(h.getScore() < 17) {
+            System.out.println("Dealer got " + h.getScore() + ". Dealer Must hit");
             hit(h);
             this.showHands();
         }
+        if(h.isBust()) System.out.println("Dealer got " + h.getScore() + ". Dealer bust!");
+        else
+            System.out.println("Dealer got " + h.getScore() + ". Dealer stands");
     }
     
     public void gameResult(Hand ph, Hand dh) {
@@ -172,26 +188,32 @@ public class Blackjack {
     }
     
     public void initDeal() {
+
+        //deal cards in alternating sequence
         player.getHands().get(0).add(deck.dealCard());
-        player.getHands().get(0).add(deck.dealCard());
+
         dealer.getHand().add(deck.dealCard());
+
+        player.getHands().get(0).add(deck.dealCard());
+
         dealer.getHand().add(deck.dealCard());
     }
     
     public void showHandsHidden() {
-        System.out.println(dealer + "'s hand: "+"XX " + dealer.getHand().getFirstCard());
+        System.out.println(dealer + "'s hand: "+ dealer.getHand().getFirstCard()+" XX" );
         for(int i=0;i<player.getHands().size();i++)
         	System.out.println(player + "'s hand "+(i+1)+": "+player.getHands().get(i).toString());
         System.out.println();
     }
     
     public void showHands() {
-        System.out.println(dealer + "'s hand: "+dealer.getHand());
+        System.out.println(dealer.toString() + "'s hand: "+dealer.getHand());
         for(int i=0;i<player.getHands().size();i++)
         	System.out.println(player + "'s hand "+(i+1)+": "+player.getHands().get(i).toString());
         System.out.println();
     }
-  
+
+
     public void clearHands() {
         player.getHands().clear();
         dealer.getHand().clear();

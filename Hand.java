@@ -9,6 +9,7 @@ public class Hand implements Splittable {
     }
     
     Hand(Card c, Integer bet){
+        //cards.clear();
     	this.add(c);
     	this.bet = bet;
     }

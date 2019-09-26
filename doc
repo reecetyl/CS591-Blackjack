@@ -1,2 +1,26 @@
 CS591 P1
 BlackJack doc
+
+Rules for our BlackJack game:
+1. No resplit (player can only split the very first hand if applicable)
+2. Double up can only perform on the very first hand
+3. No double up allowed after split (included in 2)
+4. Natural BlackJack pays 2:1
+
+game run example:
+
+
+
+
+
+Class design analysis:
+Main:
+BlackJack:
+
+Player:
+HumanPlayer:
+Dealer:
+Card:
+Deck:
+Hand:
+Splittable:

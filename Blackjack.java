@@ -7,8 +7,27 @@ public class Blackjack {
     
     Blackjack() {
         deck = new Deck();
+        deck.shuffle();
         dealer = new Dealer("Dealer", deck);
         userInput = new Scanner(System.in);
+        welcome();
+        initPlayer();
+        while(true){
+            gameRound();
+            if(player.outOfMoney()) {
+                handleOutOfMoney();
+                break;
+            }
+            //check how many cards are left in the deck and shuffle the deck when needed.
+            //if(deck.getLeftCards() < 20) getDeck().shuffle();
+            System.out.println("Do you wanna play another round? If so, enter Y/y.");
+            String doplay = userInput.nextLine();
+            char m=doplay.charAt(0);
+            if(m!='Y'&&m!='y'){
+                System.out.println("Thank you for playing BlackJack! Your final balance is " + player.getBalance());
+                break;
+            }
+        }
     }
 
     public Deck getDeck() {
@@ -49,7 +68,6 @@ public class Blackjack {
 
     public void gameRound() {
         System.out.println("\n------Starting new turn------");
-        deck.shuffle();
         initDeal();
         putDownBet();
         showHandsHidden();
@@ -222,6 +240,5 @@ public class Blackjack {
     public void hit(Hand ph) {
         ph.add(deck.dealCard());
     }
-
 
 }

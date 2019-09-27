@@ -7,6 +7,7 @@ public class Deck {
 
     public Deck() {
         initDeck();
+        shuffle();
     }
 
     public void initDeck() {

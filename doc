@@ -6,6 +6,9 @@ Rules for our BlackJack game:
 2. Double up can only perform on the very first hand
 3. No double up allowed after split (included in 2)
 4. Natural BlackJack pays 2:1
+5. Dealer hit until 17 is reached
+
+
 
 game run example:
 

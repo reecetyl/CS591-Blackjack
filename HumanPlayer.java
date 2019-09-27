@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+
 public class HumanPlayer extends Player {
     private ArrayList<Hand> hands = new ArrayList<Hand>(); //at most 4 hands after split
     private int balance;
@@ -16,7 +17,13 @@ public class HumanPlayer extends Player {
     public ArrayList<Hand> getHands() {
         return hands;
     }
-    
+
+    public void setHands(ArrayList<Hand> hands) {
+        this.hands.clear();
+        this.hands.addAll(hands);
+    }
+
+    /*
     public void splitHand(Integer bet) {
     	Card tmp1 = this.getHands().get(0).getFirstCard();
     	Card tmp2 = this.getHands().get(0).getSecondCard();
@@ -24,7 +31,8 @@ public class HumanPlayer extends Player {
     	this.getHands().add(new Hand(tmp1, bet));
     	this.getHands().add(new Hand(tmp2, bet));
     }
-    
+    */
+
     public void growBalance(int balance) {
         this.setBalance(this.getBalance()+balance);
         System.out.println("Bank notification: Your current balance is "+this.getBalance()+".\n");

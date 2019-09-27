@@ -17,13 +17,14 @@ game run example:
 
 
 Class design analysis:
-Main:
-BlackJack:
+Main: Create an instance of BlackJack game by calling BlackJack() constructor
+BlackJack: the whole blackjack game logic and game flow
 
-Player:
-HumanPlayer:
+Player: people related to this blackjack game
+HumanPlayer: extends Player class. It is the actual player of the blackjack game.
 Dealer:
 Card:
 Deck:
 Hand:
+a hand can split() instead of player split the hand, meaning we could easily give dealer the option to split if we want.
 Splittable:

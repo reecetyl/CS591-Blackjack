@@ -108,14 +108,18 @@ public class Blackjack {
             if(h.canSplit()&&player.checkBalance(h.getBet())&&!isSplitted) { //only allow to split when have two identical cards            	isSplitted =true;							    // and enough money, and only allow to split once
             	Card aCard = h.getFirstCard();					// and enough money, and only allow to split once
                 System.out.println("You got a pair of " +
-                        aCard.getValue() + "'s! It costs "+h.getBet()+"$ for splitting. Do you want to split"
+                        aCard.getScore() + "'s! It costs "+h.getBet()+"$ for splitting. Do you want to split"
                         		+ " them? (y/n)");
                 String move = userInput.nextLine();
                 if(move.equalsIgnoreCase("y") || move.equalsIgnoreCase("s")) {
                     //split here
                 	player.growBalance((-1)*h.getBet());//put down bet for splitting
                     //player.getHands().get(0).add(aCard);
-                	player.splitHand(h.getBet());
+                	//player.splitHand(h.getBet());
+                    //ArrayList<Hand> tmp = h.split();
+
+                	player.setHands(h.split());
+
                     System.out.println("Splitting... ");
                     for(Hand sh : player.getHands()) {
                     	 sh.add(deck.dealCard());
@@ -159,8 +163,9 @@ public class Blackjack {
     }
 
     public void dealerTurn(Hand h) {
-        while(h.getScore() < 17) {
-            System.out.println("Dealer got " + h.getScore() + ". Dealer Must hit");
+        //dealer hit on soft 17
+        while(h.getScore() < 17 || (h.getSoftScore() && h.getScore() == 17)) {
+            System.out.println("Dealer got " + h.getScore() + ". Dealer Must Hit");
             hit(h);
             this.showHands();
         }
@@ -225,7 +230,7 @@ public class Blackjack {
     }
     
     public void showHands() {
-        System.out.println(dealer.toString() + "'s hand: "+dealer.getHand());
+        System.out.println(dealer.toString() + "'s hand: " + dealer.getHand().toString());
         for(int i=0;i<player.getHands().size();i++)
         	System.out.println(player + "'s hand "+(i+1)+": "+player.getHands().get(i).toString());
         System.out.println();

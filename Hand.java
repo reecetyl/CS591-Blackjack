@@ -1,18 +1,33 @@
+import java.lang.reflect.Array;
 import java.util.*;
 public class Hand implements Splittable {
-    List<Card> cards = new ArrayList<>();
-    Integer bet = 0;
-    Integer score = 0;
-    boolean hasAce = false;
+    private List<Card> cards = new ArrayList<>();
+    private Integer bet = 0;
+    private Integer score = 0;
+    private boolean hasAce;
+    private boolean softScore = false;
 
     Hand() {
-        cards.clear();
+        setHasAce(false);
+        setScore(0);
     }
     
     Hand(Card c, Integer bet){
         //cards.clear();
-    	this.add(c);
-    	this.bet = bet;
+    	this();
+    	this.cards.add(c);
+    	setBet(bet);
+    	if(c.getValue().equals("A")) {
+    	    setHasAce(true);
+    	    setScore(c.getScore() +10);
+            setHasAce(true);
+            setSoftScore(true);
+        }else {
+            setHasAce(false);
+            setScore(c.getScore());
+            setHasAce(false);
+        }
+
     }
     
     public void add(Card card) {
@@ -27,26 +42,27 @@ public class Hand implements Splittable {
         score += card.getScore();
         if(card.getValue().equals("A")) {
             setHasAce(true);
+            setSoftScore(true);
         }
 
 
     }
 
-    public void setHasAce(boolean hasAce) {
+    private void setHasAce(boolean hasAce) {
         this.hasAce = hasAce;
     }
 
-    public boolean getHasAce(){
+    /*public boolean getHasAce(){
         return hasAce;
     }
-
+*/
     public void add(List<Card> cards) {
         this.cards.addAll(cards);
     }
 
     public void clear() {
         cards.clear();
-        score = 0;
+        setScore(0);
     }
     
     public void setBet(Integer b) {
@@ -74,19 +90,33 @@ public class Hand implements Splittable {
     }
 
     public Integer getScore() {
-        if(this.score.intValue() < 12) {
-            return getHasAce()? (this.score.intValue() + 10) : this.score;
+        if(this.score < 12) {
+            setSoftScore(hasAce);
+            return hasAce? (this.score + 10) : this.score;
         }
+        setSoftScore(false);
         return this.score;
     }
-    
+
+    private void setScore(Integer score) {
+        this.score = score;
+    }
+
+    public void setSoftScore(boolean softScore) {
+        this.softScore = softScore;
+    }
+    public boolean getSoftScore() { return this.softScore;}
     public String toString() {
-        String cardString = "";
+        StringBuilder cardString = new StringBuilder();
         for(Card c: cards) {
-            cardString += c.toString() + " ";
+            cardString.append(c.toString()).append(" ");
         }
-        cardString += "(" + this.getScore() + ")";
-        return cardString;
+        if(softScore) {
+            cardString.append("(soft ").append(this.getScore()).append(")");
+        } else {
+            cardString.append("(").append(this.getScore()).append(")");
+        }
+        return cardString.toString();
     }
     
     public void removeCard() {
@@ -95,19 +125,15 @@ public class Hand implements Splittable {
     
     @Override
     public boolean canSplit() {
-        if(this.getCards().size() == 2 && getFirstCard().isSameValue(getSecondCard())) {
-            return true;
-        }
-        return false;
+        return this.getCards().size() == 2 && getFirstCard().isSameValue(getSecondCard());
     }
     
     public boolean isBust() {
-        if (this.getScore() > 21) return true;
-        else return false;
+        return this.getScore() > 21;
     }
 
     public boolean isBlackJack() {
-        return getScore().intValue() == 21 ? true : false;
+        return getScore() == 21;
     }
 
     public boolean isNaturalBlackJack() {
@@ -116,4 +142,17 @@ public class Hand implements Splittable {
         }
         return false;
     }
+
+    public ArrayList<Hand> split() {
+        ArrayList<Hand> hands = new ArrayList<Hand>();
+        Card tmp1 = getFirstCard();
+        Card tmp2 = getSecondCard();
+        hands.add(new Hand(tmp1, getBet()));
+        hands.add(new Hand(tmp2, getBet()));
+        return hands;
+    }
+
+
+
+
 }

@@ -26,4 +26,5 @@ Dealer:
 Card:
 Deck:
 Hand:
+a hand can split() instead of player split the hand, meaning we could easily give dealer the option to split if we want.
 Splittable:

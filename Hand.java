@@ -3,7 +3,8 @@ public class Hand implements Splittable {
     List<Card> cards = new ArrayList<>();
     Integer bet = 0;
     Integer score = 0;
-    
+    boolean hasAce = false;
+
     Hand() {
         cards.clear();
     }
@@ -16,11 +17,27 @@ public class Hand implements Splittable {
     
     public void add(Card card) {
         cards.add(card);
+        /*
         if(card.getValue().equals("A")) {
             int tmpScore=this.getScore()<=10?11:1;
             score += tmpScore;
         }else
-            score += card.getScore();
+
+         */
+        score += card.getScore();
+        if(card.getValue().equals("A")) {
+            setHasAce(true);
+        }
+
+
+    }
+
+    public void setHasAce(boolean hasAce) {
+        this.hasAce = hasAce;
+    }
+
+    public boolean getHasAce(){
+        return hasAce;
     }
 
     public void add(List<Card> cards) {
@@ -57,6 +74,9 @@ public class Hand implements Splittable {
     }
 
     public Integer getScore() {
+        if(this.score.intValue() < 12) {
+            return getHasAce()? (this.score.intValue() + 10) : this.score;
+        }
         return this.score;
     }
     
@@ -85,10 +105,14 @@ public class Hand implements Splittable {
         if (this.getScore() > 21) return true;
         else return false;
     }
-    
+
+    public boolean isBlackJack() {
+        return getScore().intValue() == 21 ? true : false;
+    }
+
     public boolean isNaturalBlackJack() {
-        if(this.cards.size() == 2 && getScore().intValue() == 21) {
-            return true;
+        if(this.cards.size() == 2) {
+            return isBlackJack();
         }
         return false;
     }

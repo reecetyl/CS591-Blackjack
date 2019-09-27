@@ -103,7 +103,7 @@ public class Blackjack {
     }
 
     public boolean playerTurn(Hand h, boolean isSplitted) {
-        while(!h.isBust() && !h.isNaturalBlackJack()) {
+        while(!h.isBust() && !h.isBlackJack()) {
             //check for split-able
             if(h.canSplit()&&player.checkBalance(h.getBet())&&!isSplitted) { //only allow to split when have two identical cards            	isSplitted =true;							    // and enough money, and only allow to split once
             	Card aCard = h.getFirstCard();					// and enough money, and only allow to split once

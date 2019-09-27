@@ -12,8 +12,8 @@ public class Deck {
 
     public void initDeck() {
         String[] suits = {"H", "S", "C", "D"}; //H, S, C, D for Hearts, Spades, Clubs, and Diamonds
-        String[] values = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
-        //String[] values = {"A","A","A"};
+        //String[] values = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+        String[] values = {"A","A","A", "7", "4"};
 
         for (String s : suits) {
             for (String v : values) {
@@ -42,8 +42,9 @@ public class Deck {
     }
 
     public Card dealCard(){
-        if (this.headPoint > cards.size()-1) 
-            throw new RuntimeException("No more cards");
+        if (this.headPoint > cards.size()-1)
+            this.shuffle();
+            //throw new RuntimeException("No more cards");
         Card tmpCard = cards.get(headPoint);
         headPoint++;
         leftCards--;

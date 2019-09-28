@@ -1,29 +1,28 @@
 // class to represent a Card
 public class Card {
-    String value; // A, 2-10, J, Q, K
-    Integer score; // Number it counts for in Blackjack
-    String suit; // H, S, C, D for Hearts, Spades, Clubs, and Diamonds
+	public enum Suit {H, S, C ,D}; // H, S, C, D for Hearts, Spades, Clubs, and Diamonds
+	public enum Value {C_A, C_2, C_3, C_4, C_5, C_6, C_7, C_8, C_9, C_10, C_J, C_Q, C_K}
+    Value value; // A, 2-10, J, Q, K
+    Integer score; // Inner points for the card
+    Suit suit; 
     
-    Card(String value, String suit) {   
+    Card(Value value, Suit suit) {   
         this.value = value;
         this.suit = suit;
-    try {
-        Integer score = Integer.parseInt(value);
-        this.score = score;
-    } catch (NumberFormatException | NullPointerException nfe) {
-        if(value.equals("A")) this.score = 1;
-        else {
-            this.score = 10;            
-        }
-    } 
-    this.score = score;
+        if (this.value.ordinal() <= Value.C_10.ordinal()) this.score = value.ordinal()+1;
+		else 
+        	this.score = 10;
     }
     
-    public String getSuit() {
+    public Suit getSuit() {
         return suit;
     }
-
-    public String getValue() {
+    
+    public boolean isSameValue(Card b) {
+    	return this.value.name().equals(b.value.name());
+    }
+    
+    public Value getValue() {
         return value;
     }
     
@@ -31,11 +30,7 @@ public class Card {
         return score;
     }
 
-    public boolean isSameValue(Card other) {
-    return this.score == other.score;
-    }
-
     public String toString() {
-        return value + suit; // KH for King of Hearts, 9D for 9 of Diamonds
+        return suit.name() + value.name().replace("C_", "") ; // KH for King of Hearts, 9D for 9 of Diamonds
     }
 }

@@ -17,10 +17,7 @@ abstract class Player {
     }
     
     public void setBalance(int balance) {
-        //balance cannot be below 0
-        if(!(balance < 0)){
-            this.balance = balance;
-        }
+    	this.balance = balance;
     }
     public String getName() {
         return name;

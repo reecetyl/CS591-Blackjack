@@ -1,15 +1,16 @@
 public class Dealer extends Player {
 
-    private Deck deck;
-    private Hand hand;
+    private Deck deck; 
+    private BlackjackHand hand;
+    public static final int Dealer_Balance=Integer.MAX_VALUE;
     
     public Dealer(String name, Deck deck){
-        super(name,Integer.MAX_VALUE);
+        super(name,Dealer_Balance);
         this.deck = deck;
-        this.hand = new Hand();
+        this.hand = new BlackjackHand();
     }
 
-    public Hand getHand() {
+    public BlackjackHand getHand() {
         return hand;
     }
     
@@ -17,7 +18,8 @@ public class Dealer extends Player {
         return false;
     }
     
-
-
+    public void clearHand() {
+    	hand.clear();
+    }
 
 }

@@ -1,9 +1,9 @@
 import java.util.*;
+
 public class Deck {
 
-    private List<Card> cards = new LinkedList<>();
+    private List<Card> cards = new ArrayList<>();
     private int headPoint; // the index of the top card in the deck
-    private int leftCards; // the number of cards left in the current deck
 
     public Deck() {
         initDeck();
@@ -11,43 +11,29 @@ public class Deck {
     }
 
     public void initDeck() {
-        String[] suits = {"H", "S", "C", "D"}; //H, S, C, D for Hearts, Spades, Clubs, and Diamonds
-        //String[] values = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
-        String[] values = {"A","A","A", "7", "4"};
-
-        for (String s : suits) {
-            for (String v : values) {
-                cards.add(new Card(v, s));
-            }
-        }
-        setLeftCards(cards.size());
+    	for (Card.Suit s: Card.Suit.values()) {
+			for (Card.Value v: Card.Value.values()) {
+				cards.add(new Card(v, s));
+			}
+		}
     }
 
     public List<Card> getCards() {
         return cards;
     }
 
-    public int getLeftCards() {
-        return leftCards;
-    }
-
-    public void setLeftCards(int leftCards) {
-        this.leftCards = leftCards;
+    public int getDeckSize() {
+        return cards.size();
     }
 
     public void shuffle() {
         Collections.shuffle(cards);
-        headPoint = 0;
-        setLeftCards(cards.size());
     }
 
-    public Card dealCard(){
-        if (this.headPoint > cards.size()-1)
-            this.shuffle();
-            //throw new RuntimeException("No more cards");
-        Card tmpCard = cards.get(headPoint);
-        headPoint++;
-        leftCards--;
+    public Card dealCard() {
+        if (getDeckSize()==0)
+            throw new RuntimeException("No more cards");
+        Card tmpCard = cards.remove(getDeckSize()-1);
         return tmpCard;
     }
 

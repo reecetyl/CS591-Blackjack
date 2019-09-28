@@ -2,48 +2,47 @@ import java.util.ArrayList;
 
 
 public class HumanPlayer extends Player {
-    private ArrayList<Hand> hands = new ArrayList<Hand>(); //at most 4 hands after split
-    private int balance;
+    private ArrayList<BlackjackHand> hands = new ArrayList<BlackjackHand>(); //in blackjack, player can have multiple hands
     
     public HumanPlayer(String name, int balance){
         super(name,balance);
-        this.hands.add(new Hand());
+        this.addNewHand();
     }
     
-    public void playNewHand() {
-    	this.hands.add(new Hand());
+    public void addNewHand() {
+    	this.hands.add(new BlackjackHand());
     }
     
-    public ArrayList<Hand> getHands() {
+    public void addNewHand(Card c, Integer b) {
+    	this.hands.add(new BlackjackHand(c,b));
+    }
+    
+    public ArrayList<BlackjackHand> getHands() {
         return hands;
     }
 
-    public void setHands(ArrayList<Hand> hands) {
+    public void setHands(ArrayList<BlackjackHand> hands) {
         this.hands.clear();
         this.hands.addAll(hands);
     }
-
-    /*
-    public void splitHand(Integer bet) {
-    	Card tmp1 = this.getHands().get(0).getFirstCard();
-    	Card tmp2 = this.getHands().get(0).getSecondCard();
-    	this.getHands().clear();
-    	this.getHands().add(new Hand(tmp1, bet));
-    	this.getHands().add(new Hand(tmp2, bet));
+    
+    public void clearHands() {
+    	for(BlackjackHand h : hands)
+    		h.clear();
+    	hands.clear();
     }
-    */
 
     public void growBalance(int balance) {
         this.setBalance(this.getBalance()+balance);
         System.out.println("Bank notification: Your current balance is "+this.getBalance()+".\n");
     }
     
-    public boolean checkBalance(int b) {
+    public boolean canPay(int b) { 
     	 return (this.getBalance()>=b && b>0) ? true : false;
     }
     
     public boolean outOfMoney() {
-        return this.getBalance() == 0;
+        return this.getBalance() <= 0;
     }
 
 }

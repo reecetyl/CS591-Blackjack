@@ -6,12 +6,7 @@ public class Blackjack {
     Dealer dealer;
     
     Blackjack() {
-        deck = new Deck();
-        deck.shuffle();
-        dealer = new Dealer("Dealer", deck);
-        userInput = new Scanner(System.in);
-        welcome();
-        initPlayer();
+    	initBlackjack();
         while(true){
             gameRound();
             if(player.outOfMoney()) {
@@ -29,24 +24,22 @@ public class Blackjack {
             }
         }
     }
-
-    public Deck getDeck() {
-        return deck;
-    }
-
-    public void setDeck(Deck deck) {
-        this.deck = deck;
+    
+    public void initBlackjack() {
+    	deck = new Deck();
+        dealer = new Dealer("Dealer", deck);
+        userInput = new Scanner(System.in);
+        welcome();
+        initPlayer();
     }
 
     public Player getPlayer() {
         return player;
     }
 
-
-
     public void welcome() {
         System.out.println("————————————————————————————————————————————————————————");
-        System.out.println("Welcome to Tyler, Sean, and Gary's CS591 Blackjack game!");
+        System.out.println("Welcome to Tyler, Zhelin, and Gary's CS591 Blackjack game!");
         System.out.println("————————————————————————————————————————————————————————\n");
     }
 
@@ -58,10 +51,13 @@ public class Blackjack {
         System.out.println("Please enter player's name: ");
         String playerName = userInput.nextLine();
         System.out.println("Please enter the amount of your starting money: ");
-        Integer startingMoney = userInput.nextInt();
-        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        //checking for invalid input. say starting money = 0 or negative
-        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        Integer startingMoney;
+        do {
+        	startingMoney = userInput.nextInt();
+            if(startingMoney>0)
+            	break;
+            System.out.println("Starting money invalid. Your starting money has to be more than 0 dollar.");
+        }while(true);
         player = new HumanPlayer(playerName, startingMoney);
     }
 
@@ -73,27 +69,26 @@ public class Blackjack {
         showHandsHidden();
         boolean ended = playerTurn(player.getHands().get(0),false);
         if(ended == false) {
-            dealerTurn(dealer.getHand());
+            dealerTurn(dealer);
         }
-
         // determine winner
-        System.out.println("****** You have finished this round! ******");
+        System.out.println("\n------ You have finished this round! ------");
         for(int i=0;i<player.getHands().size();i++) {
         	System.out.println("For player's hand "+(i+1)+ " :");
         	this.showHands();
         	gameResult(player.getHands().get(i), dealer.getHand());
         }
         clearHands();
-        player.playNewHand();
+        player.addNewHand();
         // pay out money
     }
 
     public void putDownBet() {
-    	System.out.println("Please put down your bet: ");
+    	System.out.println("Your balance is: "+player.getBalance()+ " ! Please put down your bet: ");
     	int bets;
         do {
             bets = userInput.nextInt();
-            if(player.checkBalance(bets))
+            if(player.canPay(bets))
             	break;
             System.out.println("Please bet more than 0 dollars and less than your balance "+player.getBalance());
         }while(true);
@@ -102,13 +97,13 @@ public class Blackjack {
         userInput.nextLine();
     }
 
-    public boolean playerTurn(Hand h, boolean isSplitted) {
+    public boolean playerTurn(BlackjackHand h, boolean isSplitted) {
         while(!h.isBust() && !h.isBlackJack()) {
             //check for split-able
-            if(h.canSplit()&&player.checkBalance(h.getBet())&&!isSplitted) { //only allow to split when have two identical cards            	isSplitted =true;							    // and enough money, and only allow to split once
+            if(h.canSplit()&&player.canPay(h.getBet())&&!isSplitted) { //only allow to split when have two identical cards            	isSplitted =true;							    // and enough money, and only allow to split once
             	Card aCard = h.getFirstCard();					// and enough money, and only allow to split once
                 System.out.println("You got a pair of " +
-                        aCard.getScore() + "'s! It costs "+h.getBet()+"$ for splitting. Do you want to split"
+                        aCard.getValue().name().replace("C_", "") + "'s! It costs "+h.getBet()+"$ for splitting. Do you want to split"
                         		+ " them? (y/n)");
                 String move = userInput.nextLine();
                 if(move.equalsIgnoreCase("y") || move.equalsIgnoreCase("s")) {
@@ -117,22 +112,21 @@ public class Blackjack {
                     //player.getHands().get(0).add(aCard);
                 	//player.splitHand(h.getBet());
                     //ArrayList<Hand> tmp = h.split();
-
-                	player.setHands(h.split());
-
+                	isSplitted = true;
+                	split(h);
                     System.out.println("Splitting... ");
-                    for(Hand sh : player.getHands()) {
+                    for(BlackjackHand sh : player.getHands()) {
                     	 sh.add(deck.dealCard());
                     }
                     showHandsHidden();
-                    for(Hand hand: player.getHands()) {
-                    	playerTurn(hand,true);
+                    for(BlackjackHand hand: player.getHands()) {
+                    	playerTurn(hand,isSplitted);
                     }
                     break;
                 }
             }
             //double up is available only in the first round and not splitted
-            if(h.getCards().size() == 2&&player.checkBalance(h.getBet())&&!isSplitted) {
+            if(h.getNumCards() == 2 && player.canPay(h.getBet()) && !isSplitted) {
                 System.out.println("Do you want to double down? (y/n)");
                 String move = userInput.nextLine();
                 if(move.equalsIgnoreCase("y") || move.equalsIgnoreCase("d")) {
@@ -153,38 +147,38 @@ public class Blackjack {
             }
             this.showHandsHidden();
         }
-
         if(h.isNaturalBlackJack() || h.isBust()) {
             return true;
         }
-        this.showHands();
         return false;
-
     }
 
-    public void dealerTurn(Hand h) {
+    public void dealerTurn(Dealer d) {
         //dealer hit on soft 17
-        while(h.getScore() < 17 || (h.getSoftScore() && h.getScore() == 17)) {
-            System.out.println("Dealer got " + h.getScore() + ". Dealer Must Hit");
-            hit(h);
+        while(d.getHand().getBJScore() < 17 || (d.getHand().getSoftScore() && d.getHand().getBJScore() == 17)) {
+            System.out.println("Dealer got " + d.getHand().getBJScore() + ". Dealer Must Hit");
+            hit(d.getHand());
             this.showHands();
         }
-        if(h.isBust()) System.out.println("Dealer got " + h.getScore() + ". Dealer bust!");
+        if(d.getHand().isBust()) 
+        	System.out.println("Dealer got " + d.getHand().getBJScore() + ". Dealer bust!");
         else
-            System.out.println("Dealer got " + h.getScore() + ". Dealer stands");
+            System.out.println("Dealer got " + d.getHand().getBJScore() + ". Dealer stands");
     }
     
-    public void gameResult(Hand ph, Hand dh) {
+    public void gameResult(BlackjackHand ph, BlackjackHand dh) {
         //player bust
-        if(ph.isBust()) System.out.println("Dealer wins!");
+        if(ph.isBust()) {
+        	System.out.println("Player Busted! Dealer wins!");
+        	player.growBalance(0);
+        }
         //player natural BlackJack
         else if(ph.isNaturalBlackJack()) {
             System.out.println("Black Jack! Player wins! BlackJack is paid 2:1");
             player.growBalance(ph.getBet()*3);
             //specify in doc that natural BJ is paid 2:1
         }
-        //player not bust
-        //dealer bust
+        //player not bust, dealer bust
         else if(dh.isBust()) {
             System.out.println("Dealer Busted! Player wins!");
             player.growBalance(ph.getBet()*2);
@@ -193,12 +187,12 @@ public class Blackjack {
         //no body bust
         else {
             //dealer is natural blackjack or dealer's hand is larger
-            if(ph.getScore() < dh.getScore() || dh.isNaturalBlackJack()) {
+            if(ph.getBJScore() < dh.getBJScore() || dh.isNaturalBlackJack()) {
                 System.out.println("Dealer wins!");
                 player.growBalance(0);
             }
             //tie
-            else if(ph.getScore() == dh.getScore()) {
+            else if(ph.getBJScore() == dh.getBJScore()) {
                 System.out.println("It's a tie!");
                 player.growBalance(ph.getBet());
             }
@@ -211,39 +205,43 @@ public class Blackjack {
     }
     
     public void initDeal() {
-
         //deal cards in alternating sequence
         player.getHands().get(0).add(deck.dealCard());
-
         dealer.getHand().add(deck.dealCard());
-
         player.getHands().get(0).add(deck.dealCard());
-
         dealer.getHand().add(deck.dealCard());
     }
     
     public void showHandsHidden() {
         System.out.println(dealer + "'s hand: "+ dealer.getHand().getFirstCard()+" XX" );
         for(int i=0;i<player.getHands().size();i++)
-        	System.out.println(player + "'s hand "+(i+1)+": "+player.getHands().get(i).toString());
+        	System.out.println("Player "+ player + "'s hand "+(i+1)+": "+player.getHands().get(i).toString());
         System.out.println();
     }
     
     public void showHands() {
         System.out.println(dealer.toString() + "'s hand: " + dealer.getHand().toString());
         for(int i=0;i<player.getHands().size();i++)
-        	System.out.println(player + "'s hand "+(i+1)+": "+player.getHands().get(i).toString());
+        	System.out.println("Player "+player + "'s hand "+(i+1)+": "+player.getHands().get(i).toString());
         System.out.println();
     }
 
 
     public void clearHands() {
-        player.getHands().clear();
-        dealer.getHand().clear();
+        player.clearHands();
+        dealer.clearHand();
     }
 
     public void hit(Hand ph) {
         ph.add(deck.dealCard());
     }
-
+    
+    public void split(BlackjackHand h) {
+        Card tmp1 = h.getFirstCard();
+        Card tmp2 = h.getSecondCard();
+        int oldBet=h.getBet();
+        player.clearHands();
+        player.addNewHand(tmp1, oldBet);
+        player.addNewHand(tmp2, oldBet);
+    }
 }

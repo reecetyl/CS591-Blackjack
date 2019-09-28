@@ -9,9 +9,7 @@ public class Card {
     Card(Value value, Suit suit) {   
         this.value = value;
         this.suit = suit;
-        if (this.value.ordinal() <= Value.C_10.ordinal()) this.score = value.ordinal()+1;
-		else 
-        	this.score = 10;
+        this.score = value.ordinal()+1;
     }
     
     public Suit getSuit() {

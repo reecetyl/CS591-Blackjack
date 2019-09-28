@@ -24,7 +24,10 @@ public class BlackjackHand extends Hand implements Splittable {
     	    }else {
     	    	setBJScore(BJScore + card.getScore());
     	    }
-        }else {
+        }else if(card.getValue().ordinal() > Card.Value.C_10.ordinal()){
+        	setBJScore(BJScore + 10);
+        }
+        else {
         	setBJScore(BJScore + card.getScore());
         }
     }

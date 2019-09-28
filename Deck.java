@@ -3,7 +3,6 @@ import java.util.*;
 public class Deck {
 
     private List<Card> cards = new ArrayList<>();
-    private int headPoint; // the index of the top card in the deck
 
     public Deck() {
         initDeck();

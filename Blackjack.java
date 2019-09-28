@@ -232,7 +232,7 @@ public class Blackjack {
         dealer.clearHand();
     }
 
-    public void hit(Hand ph) {
+    public void hit(BlackjackHand ph) {
         ph.add(deck.dealCard());
     }
     

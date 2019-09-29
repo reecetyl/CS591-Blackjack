@@ -35,6 +35,8 @@ Player:
 BJPlayer (extends Player):
     BJPlayer is a player who has a list of Hand
     It can add a Hand into the list of Hand, or clear the whole list
+    showHand() print out the list of Hand
+    BJPlayer can putDownBet
 
 Dealable Interface:
     This Interface ensures all dealer can dealCard and ShuffleDeck
@@ -47,7 +49,8 @@ BJDealer (extends BJPlayer implements Dealable):
     BJDealer is a BJPlayer who has a Deck of cards, and can be a dealer
     BJDealer also plays a hand of cards, so BJDealer does not extends Dealer
     BJDealer in our game only has oneHand, which is the first Hand in the list of Hands
-
+    showHand() print out the list of Hand
+    showHandHidden() show dealer's first card and hide the second one
 
 
 Card:
@@ -66,12 +69,15 @@ Hand:
     Hand has score which is based on card score
     It can add a card, a list of cards and remove a card, clear the whole list of cards
 
-BJHand (extends Hand):
-    BJHand is a Hand
-    BJHand has bjScore according to bj rules
-    BJHand can determine whether it canSplit, isBust, isBlackJack, isNaturalBlackJack, hasAce
-    BJHand can calculate its output score (soft or not), dealing with Ace cases.
-    BJHand can determine whether its score is soft (returned by calculateOutputScore)
+Splittable Interface:
+    check whether canSplit or not
+
+BJHand (extends Hand implements Splittable):
+    BJHand is a Hand which always check for canSplit
+    It has bjScore according to bj rules
+    It can determine whether it canSplit, isBust, isBlackJack, isNaturalBlackJack, hasAce
+    It can calculate its output score (soft or not), dealing with Ace cases.
+    It can determine whether its score is soft (returned by calculateOutputScore)
 
 
 

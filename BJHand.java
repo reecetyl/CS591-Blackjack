@@ -1,49 +1,43 @@
 public class BJHand extends Hand implements Splittable {
     private Integer bet = 0;
     private Integer bjScore = 0;
+    private Integer bjHardScore = 0;
     //private boolean isSoftScore = false;
     //private boolean hasAce = false;
     BJHand() {
     	super();
     }
-    
+
+    BJHand(Integer bet) {
+        this();
+        setBet(bet);
+    }
+
     BJHand(Card c, Integer bet){
     	this();
+    	cards.add(c);
     	setBet(bet);
-    	this.add(c);
     }
 
     @Override
     public void add(Card card) {
-    	getCards().add(card);
-        /*
-    	if(card.getFaceValue().equals(FaceValue.ACE)) {
-    	    setHasAce(true);
-        }
-
-        */
-
+    	cards.add(card);
     	if(card.getFaceValue().ordinal() > FaceValue.TEN.ordinal()){
-        	setBjScore(bjScore + 10);
+        	setBjHardScore(bjHardScore + 10);
         } else {
-        	setBjScore(bjScore + card.getScore());
+        	setBjHardScore(bjHardScore + card.getScore());
         }
+        setBjScore(bjHardScore);
     }
 
     public void clear() {
         super.clear();
         setBjScore(0);
+        setBjHardScore(0);
         setBet(0);
         //setHasAce(false);
         //setSoftScore(false);
     }
-    /*private void setHasAce(boolean hasAce) {
-        this.hasAce = hasAce;
-    }
-
-     */
-
-
 
     public void setBet(Integer b) {
     	this.bet=b;
@@ -53,17 +47,16 @@ public class BJHand extends Hand implements Splittable {
     	return bet;
     }
 
-    
     public Card getFirstCard() {
     	if (getNumCards()<1)
             throw new RuntimeException("No enough cards in hand.");
-        return getCards().get(0);
+        return cards.get(0);
     }
 
     public Card getSecondCard() {
     	if (getNumCards()<2)
             throw new RuntimeException("No enough cards in hand.");
-        return getCards().get(1);
+        return cards.get(1);
     }
 
     public Integer getBjScore() {
@@ -74,18 +67,17 @@ public class BJHand extends Hand implements Splittable {
         this.bjScore = score;
     }
 
-    /*
-    public void setSoftScore(boolean softScore) {
-        this.isSoftScore = softScore;
+    public Integer getBjHardScore() {
+        return bjHardScore;
     }
-    
-    public boolean getSoftScore() { return this.isSoftScore;}
 
+    public void setBjHardScore(Integer bjHardScore) {
+        this.bjHardScore = bjHardScore;
+    }
 
-    */
     public String toString() {
         StringBuilder cardString = new StringBuilder();
-        for(Card c: getCards()) {
+        for(Card c: cards) {
             cardString.append(c.toString()).append(" ");
         }
         //Integer outputScore = calculateOutputScore();
@@ -112,14 +104,14 @@ public class BJHand extends Hand implements Splittable {
     }
 
     public boolean isNaturalBlackJack() {
-        if(getCards().size() == 2) {
+        if(cards.size() == 2) {
             return isBlackJack();
         }
         return false;
     }
 
     public boolean hasAce() {
-        for(Card c : getCards()) {
+        for(Card c : cards) {
             if (c.getFaceValue().equals(FaceValue.ACE))
                 return true;
         }
@@ -129,11 +121,11 @@ public class BJHand extends Hand implements Splittable {
     public boolean calculateOutputScore() {
         //return whether the score is soft or not
 
-        if(getBjScore() < 12 && this.hasAce()) {
-            setBjScore(this.bjScore + 10);
+        if(getBjHardScore() < 12 && this.hasAce()) {
+            setBjScore(this.bjHardScore + 10);
             return true;
         }
-        setBjScore(this.bjScore);
+        setBjScore(this.bjHardScore);
         return false;
 
     }

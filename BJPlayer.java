@@ -33,4 +33,27 @@ public class BJPlayer extends Player {
     	hands.clear();
     }
 
+    public void showHands(){
+        for (BJHand bjHand : hands) {
+            System.out.println("Your hand " + (hands.indexOf(bjHand)+1) + ": "+ bjHand.toString());
+        }
+        System.out.println();
+    }
+
+    public void showHand(int index) {
+        for (BJHand bjHand : hands) {
+            if (index == 0) {
+                System.out.println("Your hand " + (hands.indexOf(bjHand) + 1) + ": " + bjHand.toString());
+                break;
+            }
+            index--;
+        }
+        System.out.println();
+    }
+
+    public void putDownBet(int bets) {
+        getHands().get(0).setBet(bets);
+        growBalance((-1)* getHands().get(0).getBet());
+    }
+
 }

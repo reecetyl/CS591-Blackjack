@@ -1,10 +1,11 @@
 import java.util.*;
 public class Hand {
-    private List<Card> cards;
-    private Integer score = 0;
+    protected List<Card> cards;
+    private Integer score;
 
     Hand() {
     	cards = new ArrayList<>();
+    	clear();
     }
     
     Hand(Card c) {
@@ -28,11 +29,13 @@ public class Hand {
         cards.clear();
         setScore(0);
     }
-
+    /*
     public List<Card> getCards() {
-        return cards;
+        return this.cards;
     }
-    
+
+     */
+
     public Integer getNumCards() {
         return cards.size();
     }
@@ -56,7 +59,7 @@ public class Hand {
     public void removeCard() {
     	if (getNumCards()==0)
             throw new RuntimeException("Hand is empty.");
-    	this.getCards().remove(getNumCards()-1);
+    	cards.remove(getNumCards()-1);
     }
 
 }

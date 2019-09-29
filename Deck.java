@@ -8,7 +8,7 @@ public class Deck {
         cards = new ArrayList<Card>();
         initDeck2();
         //initDeck2();
-        shuffle();
+        //shuffle();
     }
 
     public void initDeck() {

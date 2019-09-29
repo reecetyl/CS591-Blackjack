@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BlackJackTable {
@@ -13,31 +14,35 @@ public class BlackJackTable {
         this.bjPlayer = bjPlayer;
         this.bjDealer = bjDealer;
         this.deck = bjDealer.getDeck();
-
-        //gamePlay();
     }
 
 
     public void gamePlay() {
-        System.out.println("\n------Welcome to the Table------");
+        System.out.println("\n-------------------Welcome to the Table-------------------");
+
         System.out.println("I am your dealer " + bjDealer.toString() + ". Good luck");
+        bjDealer.shuffleDeck();
         while(!bjPlayer.outOfMoney()) {
             initDeal();
             putDownBet();
+
             showHandsHidden();
-            boolean ended = playerTurn(bjPlayer.getHands().get(0), false);
-            if (!ended) {
+
+            boolean gameOver = playerTurn(bjPlayer.getHands().get(0), false);
+            if (!gameOver) {
                 dealerTurn(bjDealer);
             }
             // determine winner
             System.out.println("\n------ You have finished this round! ------");
             for (int i = 0; i < bjPlayer.getHands().size(); i++) {
                 System.out.println("For player's hand " + (i + 1) + " :");
-                this.showHands();
+                bjPlayer.showHand(i);
+                bjDealer.showHands();
                 gameResult(bjPlayer.getHands().get(i), bjDealer.getOneHand());
             }
             clearHands();
             bjPlayer.addNewHand();
+            bjDealer.addNewHand();
             System.out.println("One more game? (y for yes)");
             String doplay = scanner.nextLine();
             char m=doplay.charAt(0);
@@ -47,6 +52,7 @@ public class BlackJackTable {
                 System.out.println("Your current balance is " + bjPlayer.getBalance());
                 break;
             }
+            bjDealer.shuffleDeck();
         }
         handleOutOfMoney();
         // pay out money
@@ -54,10 +60,10 @@ public class BlackJackTable {
 
     public void initDeal() {
         //deal cards in alternating sequence
-        bjPlayer.getHands().get(0).add(deck.dealCard());
-        bjDealer.getOneHand().add(deck.dealCard());
-        bjPlayer.getHands().get(0).add(deck.dealCard());
-        bjDealer.getOneHand().add(deck.dealCard());
+        bjPlayer.getHands().get(0).add(bjDealer.dealCard());
+        bjDealer.getOneHand().add(bjDealer.dealCard());
+        bjPlayer.getHands().get(0).add(bjDealer.dealCard());
+        bjDealer.getOneHand().add(bjDealer.dealCard());
     }
 
     public void putDownBet() {
@@ -69,28 +75,30 @@ public class BlackJackTable {
                 break;
             System.out.println("Please bet more than 0 dollars and less than your balance "+ bjPlayer.getBalance());
         }while(true);
-        bjPlayer.getHands().get(0).setBet(bets);
-        bjPlayer.growBalance((-1)* bjPlayer.getHands().get(0).getBet());
+        bjPlayer.putDownBet(bets);
         scanner.nextLine();
     }
 
     public void showHandsHidden() {
-        System.out.println(bjDealer + "'s hand: "+ bjDealer.getOneHand().getFirstCard()+" HiddenCard" );
-        for(int i = 0; i< bjPlayer.getHands().size(); i++)
-            System.out.println("Player "+ bjPlayer + "'s hand "+(i+1)+": "+ bjPlayer.getHands().get(i).toString());
+        System.out.println("----------------------BlackJackTable----------------------");
+        bjDealer.showHandsHidden();
+        bjPlayer.showHands();
+        System.out.println("----------------------------------------------------------");
         System.out.println();
     }
 
     public void showHands() {
-        System.out.println(bjDealer + "'s hand: " + bjDealer.getOneHand().toString());
-        for(int i = 0; i< bjPlayer.getHands().size(); i++)
-            System.out.println("Player "+ bjPlayer + "'s hand "+(i+1)+": "+ bjPlayer.getHands().get(i).toString());
+        System.out.println("----------------------BlackJackTable----------------------");
+        bjDealer.showHands();
+        bjPlayer.showHands();
+        System.out.println("----------------------------------------------------------");
         System.out.println();
     }
 
     public boolean playerTurn(BJHand h, boolean isSplitted) {
         while(!h.isBust() && !h.isBlackJack()) {
             //check for split-able
+            //bjPlayer.showHands();
             if(h.canSplit()&& bjPlayer.canAfford(h.getBet())&&!isSplitted) { //only allow to split when have two identical cards            	isSplitted =true;							    // and enough money, and only allow to split once
                 Card aCard = h.getFirstCard();					// and enough money, and only allow to split once
                 System.out.println("You got a pair of " +
@@ -107,10 +115,13 @@ public class BlackJackTable {
                     isSplitted = true;
                     split(h);
                     System.out.println("Splitting... ");
+                    /*
                     for(BJHand sh : bjPlayer.getHands()) {
                         sh.add(deck.dealCard());
                     }
-                    showHandsHidden();
+
+                     */
+                    showHands();
                     for(BJHand hand: bjPlayer.getHands()) {
                         playerTurn(hand,isSplitted);
                     }
@@ -118,14 +129,18 @@ public class BlackJackTable {
                 }
             }
             //double up is available only in the first round and not splitted
-            if(h.getNumCards() == 2 && bjPlayer.canAfford(h.getBet()) && !isSplitted) {
-                System.out.println("Do you want to double down? (y/n)");
-                String move = scanner.nextLine();
-                if(move.equalsIgnoreCase("y") || move.equalsIgnoreCase("d")) {
-                    hit(h);
-                    bjPlayer.growBalance((-1) * h.getBet());
-                    h.setBet(h.getBet()*2);
-                    break;
+            if(h.getNumCards() == 2  && !isSplitted) {
+                if(bjPlayer.canAfford(h.getBet())) {
+                    System.out.println("Do you want to double down? (y/n)");
+                    String move = scanner.nextLine();
+                    if (move.equalsIgnoreCase("y") || move.equalsIgnoreCase("d")) {
+                        hit(h);
+                        bjPlayer.growBalance((-1) * h.getBet());
+                        h.setBet(h.getBet() * 2);
+                        break;
+                    }
+                } else {
+                    System.out.println("You don't have enough money to double");
                 }
             }
             System.out.println("What would you like to do with hand "+(bjPlayer.getHands().indexOf(h)+1)+"? (h = hit, s = stand)");
@@ -137,7 +152,7 @@ public class BlackJackTable {
                 System.out.println(bjPlayer +" has decided to stand. Hand "+(bjPlayer.getHands().indexOf(h)+1)+" is done.");
                 break;
             }
-            this.showHandsHidden();
+            bjPlayer.showHands();
         }
         if(h.isNaturalBlackJack() || h.isBust()) {
             return true;
@@ -147,10 +162,13 @@ public class BlackJackTable {
 
     public void dealerTurn(BJDealer d) {
         //Dealer hit on soft 17
+        showHands();
+        System.out.println("Dealer's turn");
+
         while(d.getOneHand().getBjScore() < 17 || (d.getOneHand().calculateOutputScore() && d.getOneHand().getBjScore() == 17)) {
             System.out.println("Dealer got " + d.getOneHand().getBjScore() + ". Dealer Must Hit");
             hit(d.getOneHand());
-            this.showHands();
+            bjDealer.showHands();
         }
         if(d.getOneHand().isBust())
             System.out.println("Dealer got " + d.getOneHand().getBjScore() + ". Dealer bust!");
@@ -196,22 +214,18 @@ public class BlackJackTable {
         }
     }
 
-    public void hit(BJHand ph) {
-        ph.add(deck.dealCard());
+    public void hit(BJHand bjHand) {
+        bjHand.add(bjDealer.dealCard());
     }
 
     public void split(BJHand h) {
-        Card tmp1 = h.getFirstCard();
-        Card tmp2 = h.getSecondCard();
-        int oldBet=h.getBet();
-        bjPlayer.clearHands();
-        bjPlayer.addNewHand(tmp1, oldBet);
-        bjPlayer.addNewHand(tmp2, oldBet);
+        ArrayList<BJHand> handsSplitted = bjDealer.split(h);
+        bjPlayer.setHands(handsSplitted);
     }
 
     public void clearHands() {
         bjPlayer.clearHands();
-        bjDealer.clearHand();
+        bjDealer.clearOneHand();
     }
 
     public void handleOutOfMoney() {

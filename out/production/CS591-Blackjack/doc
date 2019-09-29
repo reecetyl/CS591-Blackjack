@@ -6,8 +6,8 @@ Rules for our BlackJack game:
 2. Double up can only perform on the very first hand
 3. No double up allowed after split (included in 2)
 4. Natural BlackJack pays 2:1
-5. Dealer hit until 17 is reached
-
+5. BJDealer hit until 17 is reached
+6. Split is based on card name (not the score. eg. 10 and King don't trigger split)
 
 
 game run example:
@@ -18,13 +18,63 @@ game run example:
 
 Class design analysis:
 Main:
+    Create an instance of BlackJack game by calling BlackJack() constructor
+
 BlackJack:
+    BlackJack has a BJPlayer, BJDealer, and a Table
+
+    the whole blackjack game logic and game flow
 
 Player:
-HumanPlayer:
-Dealer:
+    a general card game player
+    Player has name, balance
+    Player can modify balance by growBalance
+    Player can determine whether his balance can afford the bet (cant afford negative bet)
+    Player can determine whether or not outOfMoney
+
+BJPlayer (extends Player):
+    BJPlayer is a player who has a list of Hand
+    It can add a Hand into the list of Hand, or clear the whole list
+
+Dealable Interface:
+    This Interface ensures all dealer can dealCard and ShuffleDeck
+
+Dealer (extends Player implements Dealable):
+    note: Dealer is not used in BlackJack. It is a generic dealer that can be used in other card game
+    Dealer is a Player who has a deck to deal and can shuffle the deck
+
+BJDealer (extends BJPlayer implements Dealable):
+    BJDealer is a BJPlayer who has a Deck of cards, and can be a dealer
+    BJDealer also plays a hand of cards, so BJDealer does not extends Dealer
+    BJDealer in our game only has oneHand, which is the first Hand in the list of Hands
+
+
+
 Card:
+    enum Suit, FaceValue
+    Our Card
+
 Deck:
+    our Deck is a normal deck of cards containing all poker cards except jokers
+    It has a list of Card called cards
+    the Deck can shuffle itself
+    the Deck can deal one card
+    generic, can be used to play other game like Texas
+
 Hand:
+    Hand is a list of Card
+    Hand has score which is based on card score
+    It can add a card, a list of cards and remove a card, clear the whole list of cards
+
+BJHand (extends Hand):
+    BJHand is a Hand
+    BJHand has bjScore according to bj rules
+    BJHand can determine whether it canSplit, isBust, isBlackJack, isNaturalBlackJack, hasAce
+    BJHand can calculate its output score (soft or not), dealing with Ace cases.
+    BJHand can determine whether its score is soft (returned by calculateOutputScore)
+
+
+
+
 a hand can split() instead of player split the hand, meaning we could easily give dealer the option to split if we want.
 Splittable:

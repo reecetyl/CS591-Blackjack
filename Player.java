@@ -19,6 +19,7 @@ abstract class Player {
     public void setBalance(int balance) {
     	this.balance = balance;
     }
+
     public String getName() {
         return name;
     }
@@ -26,12 +27,23 @@ abstract class Player {
     public void setName(String name) {
         this.name = name;
     }
-    
-    public abstract boolean outOfMoney();
+
+    public boolean outOfMoney() {
+        return this.getBalance() <= 0;
+    }
 
     // prints/compares/etc
     public String toString() {
         return name;
+    }
+
+    public void growBalance(int balance) {
+        this.setBalance(this.getBalance()+balance);
+        System.out.println("Bank notification: Your current balance is "+this.getBalance()+".\n");
+    }
+
+    public boolean canAfford(int bet) {
+        return (this.getBalance()>=bet && bet>0) ? true : false;
     }
 
 }

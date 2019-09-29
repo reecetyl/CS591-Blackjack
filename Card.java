@@ -1,15 +1,13 @@
 // class to represent a Card
 public class Card {
-	public enum Suit {H, S, C ,D}; // H, S, C, D for Hearts, Spades, Clubs, and Diamonds
-	public enum Value {C_A, C_2, C_3, C_4, C_5, C_6, C_7, C_8, C_9, C_10, C_J, C_Q, C_K}
-    Value value; // A, 2-10, J, Q, K
-    Integer score; // Inner points for the card
-    Suit suit; 
+    private FaceValue faceValue;
+    private Integer score; // Inner points for the card
+    private Suit suit;
     
-    Card(Value value, Suit suit) {   
-        this.value = value;
+    Card(FaceValue faceValue, Suit suit) {
+        this.faceValue = faceValue;
         this.suit = suit;
-        this.score = value.ordinal()+1;
+        this.score = faceValue.ordinal()+1;
     }
     
     public Suit getSuit() {
@@ -17,11 +15,11 @@ public class Card {
     }
     
     public boolean isSameValue(Card b) {
-    	return this.value.name().equals(b.value.name());
+    	return this.faceValue.equals(b.faceValue);
     }
     
-    public Value getValue() {
-        return value;
+    public FaceValue getFaceValue() {
+        return faceValue;
     }
     
     public Integer getScore() {
@@ -29,6 +27,6 @@ public class Card {
     }
 
     public String toString() {
-        return suit.name() + value.name().replace("C_", "") ; // KH for King of Hearts, 9D for 9 of Diamonds
+        return faceValue.toString() + " of " + suit.toString() + "  "; // KH for King of Hearts, 9D for 9 of Diamonds
     }
 }

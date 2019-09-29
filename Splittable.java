@@ -1,3 +1,3 @@
 public interface Splittable {
-    public abstract boolean canSplit();
+    boolean canSplit();
 }

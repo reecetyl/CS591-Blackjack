@@ -1,0 +1,27 @@
+This is Jingzhou Xue, Zhelin Liao, Tyler Reece's CS591 BlackJack game
+
+run the main. it gives you a starting point.
+
+1. main calls the BlackJack constructor to initialize a BlackJack Game
+2. BlackJack constructor would take care of welcoming you to the game,
+   ask your name, your desired balance, and your desired name for your
+   dealer (like picking a table).Also handles switching table and end
+   the whole game
+3. BlackJackTable is a table or a game. It has one dealer with a deck,
+   one player (could be multiple player) and their hands. It works like
+   a real world casino where a dealer is in charge of dealing cards,
+   shuffling the deck and splitting for the player's splittable hands.
+   Table itself is in charge of game flow and game rules.
+4. Deck and Hand are both lists of Card. Card contains enum Suit and
+   enum FaceValue as well as its score (count as 1-13 respectively). Deck
+   contains 52 cards as the poker does except for jokers. Any card game
+   could easily use the Deck and Card class.
+5. abstract Player and Dealer class can be used to create any card game
+   player, and with the Interface Dealable and a deck of cards, the player
+   could easily become a dealer. (This is good for games which dealer also
+   plays a hand like a player. Otherwise, extends Dealer would be better.)
+6. BJPlayer is a special Player who plays BlackJack. It has a list of hands
+   since splitting a hand would give the player multiple hands. BJDealer is
+   a BJPlayer with a deck of cards and some more methods to be a dealer.
+   So BJDealer could play like a regular player if any other BlackJack
+   game wants.

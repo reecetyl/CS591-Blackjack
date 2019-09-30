@@ -1,4 +1,4 @@
-public class Dealer extends Player implements Dealable{
+abstract class Dealer extends Player implements Dealable{
 
     private static final int Dealer_Balance = Integer.MAX_VALUE;
     private Deck deck;

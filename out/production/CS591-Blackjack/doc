@@ -1,29 +1,28 @@
 CS591 P1
 BlackJack doc
 
-Rules for our BlackJack game:
+Special Rules for our BlackJack game:
 1. No resplit (player can only split the very first hand if applicable)
-2. Double up can only perform on the very first hand
-3. No double up allowed after split (included in 2)
+2. Double up can only perform on the very first hand. No double up allowed after split.
+3. Resplit and Double up after split can be done with very few code modification
 4. Natural BlackJack pays 2:1
-5. BJDealer hit until 17 is reached
+5. BJDealer hit on soft 17 (count Ace as 11)
 6. Split is based on card name (not the score. eg. 10 and King don't trigger split)
 
-
-game run example:
-
-
-
-
-
 Class design analysis:
+
 Main:
     Create an instance of BlackJack game by calling BlackJack() constructor
 
 BlackJack:
-    BlackJack has a BJPlayer, BJDealer, and a Table
+    BlackJack has a BJPlayer and a BlackJackTable
+    ask for some basic player information and start a BlackJackTable with users' preferred dealer
 
-    the whole blackjack game logic and game flow
+BlackJackTable:
+    has a bjDealer who has a deck of cards
+    control the whole blackjack game logic and game flow
+    determine winner
+    All game details related to Blackjack rules are here
 
 Player:
     a general card game player
@@ -52,7 +51,6 @@ BJDealer (extends BJPlayer implements Dealable):
     showHand() print out the list of Hand
     showHandHidden() show dealer's first card and hide the second one
 
-
 Card:
     enum Suit, FaceValue
     Our Card
@@ -79,8 +77,100 @@ BJHand (extends Hand implements Splittable):
     It can calculate its output score (soft or not), dealing with Ace cases.
     It can determine whether its score is soft (returned by calculateOutputScore)
 
+***********************************************************************
 
+Sample run:
 
+***********************************************************************
 
-a hand can split() instead of player split the hand, meaning we could easily give dealer the option to split if we want.
-Splittable:
+————————————————————————————————————————————————————————
+Welcome to Tyler, Zhelin, and Gary's CS591 Blackjack game!
+————————————————————————————————————————————————————————
+
+Please enter player's name:
+Gary
+Please enter the amount of your starting money:
+1000
+Please enter your desired dealer's name:
+cpk
+
+-------------------Welcome to the Table-------------------
+I am your dealer cpk. Good luck
+Your balance is: 1000 ! Please put down your bet:
+50
+Bank notification: Your current balance is 950.
+
+----------------------BlackJackTable----------------------
+Dealer cpk's hand: 4 of Spades   Hidden Card
+
+Your hand 1: 7 of Hearts   7 of Spades   (14)
+
+----------------------------------------------------------
+
+You got a pair of 7's! It costs 50$ for splitting. Do you want to split them? (y/n)
+y
+Bank notification: Your current balance is 900.
+
+Splitting...
+----------------------BlackJackTable----------------------
+Dealer cpk's hand: 4 of Spades   7 of Clubs   (11)
+
+Your hand 1: 7 of Hearts   Queen of Diamonds   (17)
+Your hand 2: 7 of Spades   5 of Spades   (12)
+
+----------------------------------------------------------
+
+What would you like to do with hand 1? (h = hit, s = stand)
+s
+Gary has decided to stand. Hand 1 is done.
+What would you like to do with hand 2? (h = hit, s = stand)
+h
+Your hand 1: 7 of Hearts   Queen of Diamonds   (17)
+Your hand 2: 7 of Spades   5 of Spades   2 of Hearts   (14)
+
+What would you like to do with hand 2? (h = hit, s = stand)
+h
+Your hand 1: 7 of Hearts   Queen of Diamonds   (17)
+Your hand 2: 7 of Spades   5 of Spades   2 of Hearts   Jack of Clubs   (24)
+
+----------------------BlackJackTable----------------------
+Dealer cpk's hand: 4 of Spades   7 of Clubs   (11)
+
+Your hand 1: 7 of Hearts   Queen of Diamonds   (17)
+Your hand 2: 7 of Spades   5 of Spades   2 of Hearts   Jack of Clubs   (24)
+
+----------------------------------------------------------
+
+Dealer's turn
+Dealer got 11. Dealer Must Hit
+Dealer cpk's hand: 4 of Spades   7 of Clubs   Queen of Spades   (21)
+
+Dealer got 21. Dealer stands
+
+------ You have finished this round! ------
+For player's hand 1 :
+Your hand 1: 7 of Hearts   Queen of Diamonds   (17)
+
+Dealer cpk's hand: 4 of Spades   7 of Clubs   Queen of Spades   (21)
+
+Dealer wins!
+Bank notification: Your current balance is 900.
+
+For player's hand 2 :
+Your hand 2: 7 of Spades   5 of Spades   2 of Hearts   Jack of Clubs   (24)
+
+Dealer cpk's hand: 4 of Spades   7 of Clubs   Queen of Spades   (21)
+
+Player Busted! Dealer wins!
+Bank notification: Your current balance is 900.
+
+One more game? (y for yes)
+n
+
+It's my pleasure to deal for you! See you next time!
+*************Leaving table***************
+Your current balance is 900
+Thank you for playing and losing all your money! See you next time!
+Do you wanna switch table and play more? If so, enter Y/y.
+n
+Thank you for playing BlackJack! Your final balance is 900

@@ -6,7 +6,7 @@ public class Deck {
 
     public Deck() {
         cards = new ArrayList<Card>();
-        initDeck2();
+        initDeck();
         //initDeck2();
         //shuffle();
     }
